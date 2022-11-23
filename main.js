@@ -1,8 +1,14 @@
 import WebSocket, { WebSocketServer } from "ws";
 import { existsSync, readFileSync, renameSync, writeFileSync } from "fs";
+import { createServer } from "http";
+
+const tasks = JSON.parse(readFileSync("tasks.json", { encoding: "utf-8" }))
+const password = readFileSync("password.txt", { encoding: "utf-8" })
+
+const server = createServer();
 
 const wss = new WebSocketServer({
-  port: 8080,
+  server,
   perMessageDeflate: {
     zlibDeflateOptions: {
       // See zlib defaults.
@@ -46,23 +52,114 @@ function readLeaderboard() {
 	}
 }
 
+/*
+{
+	name: "Jannik",
+	level: 1
+}
+*/
+
+let admins = [];
+let players = [];
+let isRunning = false;
+
 wss.on("connection", (ws) => {
+	let name = "UNKNOWN NAME";
+	let current_level = 1;
+	players.push(ws);
 	ws.on("message", (data) => {
 		const command = data.toString().split(" ");
-		if(command[0] == "get") {
-			ws.send(JSON.stringify(readLeaderboard()));
-		} else if(command[0] == "add") {
+		console.log(name + ": " + command[0]);
+		if(command[0] == "admin") {
+			command.splice(0, 1);
+			if(command.join(" ") == password) {
+				ws.send("approved " + JSON.stringify(readLeaderboard()));
+				admins.push(ws);
+			} else {
+				ws.send("declined");
+			}
+		} else if(command[0] == "identify") {
+			command.splice(0, 1);
+			name = command.join(" ");
 			let leaderboard = readLeaderboard();
-			if(isNaN(command[1])) {
-				ws.send("INVALIDSCORE")
+			if(leaderboard.find(u => u.name == name)) {
+				current_level = leaderboard.find(u => u.name == name).level;
+			} else {
+				leaderboard.push({name, level: 1});
+			}
+			leaderboard = leaderboard.sort((a, b) => b.level - a.level);
+			writeFileSync("leaderboard.json", JSON.stringify(leaderboard), { encoding: "utf-8" })
+			for(const admin of admins) {
+				admin.send("update " + JSON.stringify(leaderboard));
+			}
+		} else if(command[0] == "task") {
+			if(!isRunning) {
+				ws.send("notrunning");
 				return;
 			}
-			const score = parseInt(command[1]);
-			command.splice(0, 2);
-			leaderboard.push({name: command.join(" "), score});
-			leaderboard = leaderboard.sort((a, b) => b.score - a.score)
+			if(!tasks[current_level]) {
+				return;
+			}
+			ws.send("task " + JSON.stringify(tasks[current_level]));
+		} else if(command[0] == "done") {
+			if(!isRunning) {
+				ws.send("notrunning");
+				return;
+			}
+			current_level++;
+			if(!tasks[current_level]) {
+				ws.send("finished");
+			}
+			let leaderboard = readLeaderboard();
+			leaderboard.find(u => u.name == name).level = current_level;
+			leaderboard = leaderboard.sort((a, b) => b.level - a.level);
 			writeFileSync("leaderboard.json", JSON.stringify(leaderboard), { encoding: "utf-8" })
-			ws.send("OK");
+			for(const admin of admins) {
+				admin.send("update " + JSON.stringify(leaderboard));
+			}
+		} else if(command[0] == "leaderboard") {
+			ws.send("leaderboard " + JSON.stringify(readLeaderboard()));
+		} else if(command[0] == "start") {
+			isRunning = true;
+			if(admins.includes(ws)) {
+				for(const player of players) {
+					player.send("start");
+				}
+			}
+		} else if(command[0] == "end") {
+			isRunning = false;
+			if(admins.includes(ws)) {
+				for(const player of players) {
+					player.send("end");
+				}
+			}
 		}
 	})
 })
+
+server.on("request", (req, res) => {
+	if(req.url == "/") {
+		res.write(readFileSync("index.html"));
+		res.end();
+	} else if(req.url == "/ui.css") {
+		res.write(readFileSync("ui.css"));
+		res.end();
+	} else if(req.url == "/font/Roboto-Round-Regular.eot") {
+		res.write(readFileSync("font/Roboto-Round-Regular.eot"));
+		res.end();
+	} else if(req.url == "/font/Roboto-Round-Regular.svg") {
+		res.write(readFileSync("font/Roboto-Round-Regular.svg"));
+		res.end();
+	} else if(req.url == "/font/Roboto-Round-Regular.ttf") {
+		res.write(readFileSync("font/Roboto-Round-Regular.ttf"));
+		res.end();
+	} else if(req.url == "/font/Roboto-Round-Regular.woff") {
+		res.write(readFileSync("font/Roboto-Round-Regular.woff"));
+		res.end();
+	} else if(req.url == "/font/Roboto-Round-Regular.woff2") {
+		res.write(readFileSync("font/Roboto-Round-Regular.woff2"));
+		res.end();
+	}
+})
+
+server.listen(8080);

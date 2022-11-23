@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>PicoScratch Server</title>
+	<link rel="stylesheet" href="ui.css">
+	<style>
+		th, td {
+			padding: 5px;
+			text-align: center;
+			border-radius: 10px;
+		}
+		th:nth-of-type(odd),
+		td:nth-of-type(odd) {
+			background-color: #2e2e2e;
+		}
+	</style>
+</head>
+<body>
+	<div style="display: flex; gap: 15px; flex-direction: column;">
+		<div style="padding: 5px; background-color: #1d1d1d; border-color: #2e2e2e; border-width: 2px; border-style: solid; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+			<h1 style="margin: 0;">Leaderboard</h1>
+			<table id="leaderboard" style="font-size: 1.5rem;"></table>
+		</div>
+		<div style="padding: 5px; background-color: #1d1d1d; border-color: #2e2e2e; border-width: 2px; border-style: solid; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px;">
+			<h1 style="margin: 0;">Control</h1>
+			<button id="start">Start Game</button>
+			<button id="end">End Game</button>
+		</div>
+	</div>
+	<script>
+		const ws = new WebSocket("ws://" + location.host);
+		let leaderboard = [];
+		function renderLeaderboard() {
+			while (document.getElementById("leaderboard").firstChild) {
+				document.getElementById("leaderboard").removeChild(document.getElementById("leaderboard").lastChild);
+			}
+			const tr = document.createElement("tr");
+			["Platz", "Name", "Level"].forEach(s => {
+				const td = document.createElement("th");
+				td.innerText = s;
+				tr.appendChild(td);
+			})
+			document.getElementById("leaderboard").appendChild(tr);
+			for(let i = 0; i < 10; i++) {
+				if(!leaderboard[i]) break;
+				const player = leaderboard[i];
+				const tr = document.createElement("tr");
+				const place = document.createElement("td");
+				place.innerText = i + 1;
+				tr.appendChild(place);
+				const name = document.createElement("td");
+				name.innerText = player.name;
+				tr.appendChild(name);
+				const level = document.createElement("td");
+				level.innerText = player.level;
+				tr.appendChild(level);
+				document.getElementById("leaderboard").appendChild(tr);
+			}
+		}
+		ws.addEventListener("open", () => {
+			ws.send("admin lulzhaha");
+		})
+		ws.addEventListener("message", (data) => {
+			const msg = data.data.toString();
+			if(msg == "declined") {
+				console.log("Declined");
+			} else if(msg.startsWith("approved")) {
+				leaderboard = JSON.parse(msg.split("approved ", 2)[1]);
+				renderLeaderboard();
+			} else if(msg.startsWith("update")) {
+				leaderboard = JSON.parse(msg.split("update ", 2)[1]);
+				renderLeaderboard();
+			}
+		})
+		document.querySelector("#start").addEventListener("click", () => {
+			ws.send("start");
+		})
+		document.querySelector("#end").addEventListener("click", () => {
+			ws.send("end");
+		})
+	</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+[
+	{},
+	{
+		"name": "LED zum blinken bringen",
+		"instructions": [
+			{
+				"text": "Nehme ein \"Wiederhole fortlaufend\" block und ziehe ihn unter den \"Wenn grüne Flagge geklickt\" block",
+				"block": "control_forever",
+				"previousBlock": "event_whenflagclicked"
+			},
+			{
+				"text": "Nehme ein \"Schalte interne LED an\" block und ziehe ihn unter den \"Wiederhole\" block",
+				"block": "pico_internalledon",
+				"parentBlock": "control_forever"
+			},
+			{
+				"text": "Baue eine pause mit einem \"warte X sekunden\" block",
+				"block": "control_wait",
+				"previousBlock": "pico_internalledon"
+			},
+			{
+				"text": "Schalte die LED wieder aus mit einem \"Schalte interne LED aus\" block",
+				"block": "pico_internalledoff",
+				"previousBlock": "control_wait"
+			},
+			{
+				"text": "Baue eine weitere pause ein.",
+				"block": "control_wait",
+				"previousBlock": "pico_internalledoff"
+			}
+		]
+	},
+	{
+		"name": "Externe LED zum blinken bringen",
+		"instructions": [
+			{
+				"text": "Nehme ein \"Wiederhole fortlaufend\" block und ziehe ihn unter den \"Wenn grüne Flagge geklickt\" block",
+				"block": "control_forever",
+				"previousBlock": "event_whenflagclicked"
+			},
+			{
+				"text": "Nehme ein \"Schalte LED an\" block und ziehe ihn unter den \"Wiederhole\" block",
+				"block": "pico_ledon",
+				"parentBlock": "control_forever"
+			},
+			{
+				"text": "Baue eine pause mit einem \"warte X sekunden\" block",
+				"block": "control_wait",
+				"previousBlock": "pico_ledon"
+			},
+			{
+				"text": "Schalte die LED wieder aus mit einem \"Schalte LED aus\" block",
+				"block": "pico_ledoff",
+				"previousBlock": "control_wait"
+			},
+			{
+				"text": "Baue eine weitere pause ein.",
+				"block": "control_wait",
+				"previousBlock": "pico_ledoff"
+			}
+		]
+	},
+	{
+		"name": "LED mit Knopf steuern",
+		"instructions": [
+			{
+				"text": "Mache erneut eine unendliche Schleife",
+				"block": "control_forever",
+				"previousBlock": "event_whenflagclicked"
+			},
+			{
+				"text": "Nehme einen \"falls ... sonst\" block",
+				"block": "control_if_else",
+				"parentBlock": "control_forever"
+			},
+			{
+				"text": "Ziehe einen \"Ist Knopf gedrückt?\" block in den \"falls ... sonst\" block",
+				"block": "pico_buttonstatus",
+				"parentBlock": "control_if_else"
+			},
+			{
+				"text": "Schalte die LED ein, wenn ja",
+				"block": "pico_ledon",
+				"parentBlock": "control_if_else",
+				"parentStack": "SUBSTACK"
+			},
+			{
+				"text": "Schalte die LED aus, wenn nicht",
+				"block": "pico_ledoff",
+				"parentBlock": "control_if_else",
+				"parentStack": "SUBSTACK2"
+			}
+		]
+	},
+	{
+		"name": "LED mit Poti steuern",
+		"instructions": [
+			{
+				"text": "Mache noch eine unendliche Schleife",
+				"block": "control_forever",
+				"previousBlock": "event_whenflagclicked"
+			},
+			{
+				"text": "Nehme einen \"Setze LED helligkeit\" block",
+				"block": "pico_setledbrightness",
+				"parentBlock": "control_forever"
+			},
+			{
+				"text": "Nehme einen \"Potentiometer wert\" block",
+				"block": "pico_potentiometer",
+				"parentBlock": "pico_setledbrightness"
+			}
+		]
+	}
+]
