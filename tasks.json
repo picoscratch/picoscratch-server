@@ -19,6 +19,12 @@
 				"previousBlock": "pico_internalledon"
 			},
 			{
+				"type": "dialog",
+				"title": "Nerviger Test-Dialog",
+				"text": "Hallo!<br>Ich bin ein Test Dialog!<br>Ich unterstütze sogar <b>HTML</b> <i>Code</i>!!",
+				"closeButton": "Ok krass"
+			},
+			{
 				"text": "Schalte die LED wieder aus mit einem \"Schalte interne LED aus\" block",
 				"block": "pico_internalledoff",
 				"previousBlock": "control_wait"
@@ -27,6 +33,23 @@
 				"text": "Baue eine weitere pause ein.",
 				"block": "control_wait",
 				"previousBlock": "pico_internalledoff"
+			},
+			{
+				"type": "dialog",
+				"title": "Warum muss eine weitere Pause eingebaut werden?",
+				"text": "Eine unendliche Schleife springt sofort zurück. Das heißt die LED wird ausgeschaltet und <b>sofort</b> wieder eingeschaltet.<br>Dadurch erscheint die LED immer an.",
+				"closeButton": "Ok subba"
+			},
+			{
+				"type": "quiz",
+				"question": "Warum muss eine weitere Pause eingebaut werden?",
+				"answers": [
+					"Weil sonst die LED explodiert",
+					"Warum nicht",
+					"Weil die LED sonst nur an erscheinen würde",
+					"Damit der Code länger ist"
+				],
+				"correct": 2
 			}
 		]
 	},

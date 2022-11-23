@@ -98,6 +98,7 @@ wss.on("connection", (ws) => {
 				return;
 			}
 			if(!tasks[current_level]) {
+				ws.send("finished");
 				return;
 			}
 			ws.send("task " + JSON.stringify(tasks[current_level]));
