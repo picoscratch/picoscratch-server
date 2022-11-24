@@ -1,6 +1,16 @@
 [
 	{},
 	{
+		"name": "Hallo Welt",
+		"instructions": [
+			{
+				"text": "Nehme unter der Kategorie \"Debug\" den Block \"Gebe ... in der Konsole aus\"",
+				"block": "debug_print",
+				"previousBlock": "event_whenflagclicked"
+			}
+		]
+	},
+	{
 		"name": "LED zum blinken bringen",
 		"instructions": [
 			{
@@ -19,12 +29,6 @@
 				"previousBlock": "pico_internalledon"
 			},
 			{
-				"type": "dialog",
-				"title": "Nerviger Test-Dialog",
-				"text": "Hallo!<br>Ich bin ein Test Dialog!<br>Ich unterstütze sogar <b>HTML</b> <i>Code</i>!!",
-				"closeButton": "Ok krass"
-			},
-			{
 				"text": "Schalte die LED wieder aus mit einem \"Schalte interne LED aus\" block",
 				"block": "pico_internalledoff",
 				"previousBlock": "control_wait"
@@ -38,7 +42,7 @@
 				"type": "dialog",
 				"title": "Warum muss eine weitere Pause eingebaut werden?",
 				"text": "Eine unendliche Schleife springt sofort zurück. Das heißt die LED wird ausgeschaltet und <b>sofort</b> wieder eingeschaltet.<br>Dadurch erscheint die LED immer an.",
-				"closeButton": "Ok subba"
+				"closeButton": "Ok"
 			},
 			{
 				"type": "quiz",
@@ -56,6 +60,18 @@
 	{
 		"name": "Externe LED zum blinken bringen",
 		"instructions": [
+			{
+				"type": "dialog",
+				"title": "Wiring",
+				"text": "Stecke auf dem Steckbrett:<br><img src=\"PICOSCRATCHSERVER/img/led-wiring.png\">",
+				"closeButton": "Fertig"
+			},
+			{
+				"type": "dialog",
+				"title": "Wiederstand",
+				"text": "Eine LED funktioniert indem durch Strom Reibung generiert wird.<br>Diese Reibung erzeugt das Licht.<br>Wenn zu viel Strom durch die LED fließt, also zu viel Reibung, kann sie durchbrennen!<br>Der Wiederstand verhindert das durchbrennen.",
+				"closeButton": "Ok"
+			},
 			{
 				"text": "Nehme ein \"Wiederhole fortlaufend\" block und ziehe ihn unter den \"Wenn grüne Flagge geklickt\" block",
 				"block": "control_forever",
@@ -80,12 +96,46 @@
 				"text": "Baue eine weitere pause ein.",
 				"block": "control_wait",
 				"previousBlock": "pico_ledoff"
+			},
+			{
+				"type": "quiz",
+				"question": "Wie funktioniert eine LED?",
+				"answers": [
+					"Durch magie",
+					"Der Strom erzeugt Feuer, welches leuchtet.",
+					"Garnicht",
+					"Der Strom generiert Reibung, welches leuchtet."
+				],
+				"correct": 3
+			},
+			{
+				"type": "quiz",
+				"question": "Wofür ist der Wiederstand?",
+				"answers": [
+					"Verhindert die Reibung bei der LED.",
+					"Verringert den Strom, damit die LED nicht durchbrennt.",
+					"Braucht die LED zum funktionieren",
+					"Der Wiederstand macht garnichts."
+				],
+				"correct": 1
 			}
 		]
 	},
 	{
 		"name": "LED mit Knopf steuern",
 		"instructions": [
+			{
+				"type": "dialog",
+				"title": "Umgang mit Knöpfen",
+				"text": "Achtung, beim rein und rausstecken von Knöpfen auf dem Steckbrett kann man sehr einfach die Pins verbiegen.",
+				"closeButton": "Ok"
+			},
+			{
+				"type": "dialog",
+				"title": "Wiring",
+				"text": "Stecke auf dem Steckbrett:<br><img src=\"PICOSCRATCHSERVER/img/button-wiring.png\">",
+				"closeButton": "Fertig"
+			},
 			{
 				"text": "Mache erneut eine unendliche Schleife",
 				"block": "control_forever",
@@ -118,6 +168,12 @@
 	{
 		"name": "LED mit Poti steuern",
 		"instructions": [
+			{
+				"type": "dialog",
+				"title": "Wiring",
+				"text": "Stecke auf dem Steckbrett:<br><img src=\"PICOSCRATCHSERVER/img/poti-wiring.png\">",
+				"closeButton": "Fertig"
+			},
 			{
 				"text": "Mache noch eine unendliche Schleife",
 				"block": "control_forever",

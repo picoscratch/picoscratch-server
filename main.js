@@ -175,6 +175,10 @@ server.on("request", (req, res) => {
 	} else if(req.url == "/font/Roboto-Round-Regular.woff2") {
 		res.write(readFileSync("font/Roboto-Round-Regular.woff2"));
 		res.end();
+	} else if(req.url.startsWith("/img")) {
+		if(req.url.includes("..")) return;
+		res.write(readFileSync(req.url.slice(1, req.url.length)));
+		res.end();
 	}
 })
 
