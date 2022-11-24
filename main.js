@@ -60,6 +60,7 @@ function readLeaderboard() {
 */
 
 let admins = [];
+let leaderboardpushers = [];
 let players = [];
 let isRunning = false;
 
@@ -92,12 +93,19 @@ wss.on("connection", (ws) => {
 			for(const admin of admins) {
 				admin.send("update " + JSON.stringify(leaderboard));
 			}
+			for(const pusher of leaderboardpushers) {
+				pusher.send("update " + JSON.stringify(leaderboard));
+			}
 		} else if(command[0] == "task") {
 			if(!isRunning) {
 				ws.send("notrunning");
 				return;
 			}
 			if(!tasks[current_level]) {
+				if(!leaderboardpushers.includes(ws)) {
+					ws.send("update " + JSON.stringify(readLeaderboard()));
+					leaderboardpushers.push(ws);
+				}
 				ws.send("finished");
 				return;
 			}
@@ -109,6 +117,10 @@ wss.on("connection", (ws) => {
 			}
 			current_level++;
 			if(!tasks[current_level]) {
+				if(!leaderboardpushers.includes(ws)) {
+					ws.send("update " + JSON.stringify(readLeaderboard()));
+					leaderboardpushers.push(ws);
+				}
 				ws.send("finished");
 			}
 			let leaderboard = readLeaderboard();
@@ -117,6 +129,9 @@ wss.on("connection", (ws) => {
 			writeFileSync("leaderboard.json", JSON.stringify(leaderboard), { encoding: "utf-8" })
 			for(const admin of admins) {
 				admin.send("update " + JSON.stringify(leaderboard));
+			}
+			for(const pusher of leaderboardpushers) {
+				pusher.send("update " + JSON.stringify(leaderboard));
 			}
 		} else if(command[0] == "leaderboard") {
 			ws.send("leaderboard " + JSON.stringify(readLeaderboard()));
