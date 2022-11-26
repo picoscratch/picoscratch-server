@@ -69,7 +69,7 @@
 			{
 				"type": "dialog",
 				"title": "Wiederstand",
-				"text": "Eine LED funktioniert indem durch Strom Reibung generiert wird.<br>Diese Reibung erzeugt das Licht.<br>Wenn zu viel Strom durch die LED fließt, also zu viel Reibung, kann sie durchbrennen!<br>Der Wiederstand verhindert das durchbrennen.",
+				"text": "Wenn du dir eine LED ganz nah anschschaust, siehst du dass das Metall einen kleinen Abstand hat.<br>Luft kann auf kurze Distanzen Strom leiten. Der durch Luft geleitete Strom erzeugt einen kleinen Blitz, welcher das Licht erzeugt.<br>Wenn zu viel Strom durch die LED fließt, kann sie durchbrennen!<br>Der Wiederstand verhindert das durchbrennen.",
 				"closeButton": "Ok"
 			},
 			{
