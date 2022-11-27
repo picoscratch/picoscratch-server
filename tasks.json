@@ -77,7 +77,7 @@
 			{
 				"type": "dialog",
 				"title": "Wiederstand",
-				"text": "Wenn du dir eine LED ganz nah anschschaust, siehst du dass das Metall einen kleinen Abstand hat.<br>Luft kann auf kurze Distanzen Strom leiten. Der durch Luft geleitete Strom erzeugt einen kleinen Blitz, welcher das Licht erzeugt.<br>Wenn zu viel Strom durch die LED fließt, kann sie durchbrennen!<br>Der Wiederstand limitiert den Strom, und verhindert dadurch das durchbrennen der LED.<br><br><img src=\"PICOSCRATCHSERVER/img/led.jpg\">",
+				"text": "Wenn zu viel Strom durch die LED fließt, kann sie durchbrennen!<br>Der Wiederstand limitiert den Strom, und verhindert dadurch das durchbrennen der LED.",
 				"closeButton": "Ok"
 			},
 			{
@@ -107,20 +107,9 @@
 			},
 			{
 				"type": "quiz",
-				"question": "Wie funktioniert eine LED?",
-				"answers": [
-					"Durch magie",
-					"Der Strom erzeugt Feuer, welches leuchtet.",
-					"Garnicht",
-					"Der Strom erzeugt Blitze, welche leuchten."
-				],
-				"correct": 3
-			},
-			{
-				"type": "quiz",
 				"question": "Wofür ist der Wiederstand?",
 				"answers": [
-					"Verhindert die Reibung bei der LED.",
+					"Erhöht den Strom, damit die LED heller erscheint.",
 					"Verringert den Strom, damit die LED nicht durchbrennt.",
 					"Braucht die LED zum funktionieren",
 					"Der Wiederstand macht garnichts."
