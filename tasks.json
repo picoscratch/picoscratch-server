@@ -6,7 +6,15 @@
 			{
 				"text": "Nehme unter der Kategorie \"Debug\" den Block \"Gebe ... in der Konsole aus\"",
 				"block": "debug_print",
-				"previousBlock": "event_whenflagclicked"
+				"previousBlock": "event_whenflagclicked",
+				"blockTag": "helloworld"
+			},
+			{
+				"type": "changeblock",
+				"text": "Ändere den Text zu \"Hallo Welt\"",
+				"targetBlockTag": "helloworld",
+				"name": "TEXT",
+				"to": "Hallo Welt"
 			}
 		]
 	},
@@ -69,7 +77,7 @@
 			{
 				"type": "dialog",
 				"title": "Wiederstand",
-				"text": "Wenn du dir eine LED ganz nah anschschaust, siehst du dass das Metall einen kleinen Abstand hat.<br>Luft kann auf kurze Distanzen Strom leiten. Der durch Luft geleitete Strom erzeugt einen kleinen Blitz, welcher das Licht erzeugt.<br>Wenn zu viel Strom durch die LED fließt, kann sie durchbrennen!<br>Der Wiederstand verhindert das durchbrennen.",
+				"text": "Wenn du dir eine LED ganz nah anschschaust, siehst du dass das Metall einen kleinen Abstand hat.<br>Luft kann auf kurze Distanzen Strom leiten. Der durch Luft geleitete Strom erzeugt einen kleinen Blitz, welcher das Licht erzeugt.<br>Wenn zu viel Strom durch die LED fließt, kann sie durchbrennen!<br>Der Wiederstand limitiert den Strom, und verhindert dadurch das durchbrennen der LED.<br><br><img src=\"PICOSCRATCHSERVER/img/led.jpg\">",
 				"closeButton": "Ok"
 			},
 			{
@@ -104,7 +112,7 @@
 					"Durch magie",
 					"Der Strom erzeugt Feuer, welches leuchtet.",
 					"Garnicht",
-					"Der Strom generiert Reibung, welches leuchtet."
+					"Der Strom erzeugt Blitze, welche leuchten."
 				],
 				"correct": 3
 			},
@@ -149,7 +157,15 @@
 			{
 				"text": "Ziehe einen \"Ist Knopf gedrückt?\" block in den \"falls ... sonst\" block",
 				"block": "pico_buttonstatus",
-				"parentBlock": "control_if_else"
+				"parentBlock": "control_if_else",
+				"blockTag": "btnpressed"
+			},
+			{
+				"type": "changeblock",
+				"text": "Ändere die PIN Nummer zu 1",
+				"targetBlockTag": "btnpressed",
+				"name": "NUM",
+				"to": "1"
 			},
 			{
 				"text": "Schalte die LED ein, wenn ja",
@@ -187,7 +203,91 @@
 			{
 				"text": "Nehme einen \"Potentiometer wert\" block",
 				"block": "pico_potentiometer",
-				"parentBlock": "pico_setledbrightness"
+				"parentBlock": "pico_setledbrightness",
+				"blockTag": "poti"
+			},
+			{
+				"type": "changeblock",
+				"text": "Gebe den PIN 26 ein",
+				"targetBlockTag": "poti",
+				"name": "NUM",
+				"to": "26"
+			}
+		]
+	},
+	{
+		"name": "Fotoresistor",
+		"instructions": [
+			{
+				"type": "dialog",
+				"title": "Wiring",
+				"text": "Stecke auf dem Steckbrett:<br><img src=\"PICOSCRATCHSERVER/img/photo-wiring.png\">",
+				"closeButton": "Fertig"
+			},
+			{
+				"text": "Mache noch eine unendliche Schleife",
+				"block": "control_forever",
+				"previousBlock": "event_whenflagclicked"
+			},
+			{
+				"text": "Nehme einen \"Gebe ... in der Konsole aus\" block",
+				"block": "debug_print",
+				"parentBlock": "control_forever"
+			},
+			{
+				"text": "Nehme einen \"Fotoresistor ... Lichtlevel\" block",
+				"block": "pico_photoresistor",
+				"parentBlock": "debug_print",
+				"blockTag": "photoresistor"
+			},
+			{
+				"type": "changeblock",
+				"text": "Gebe den PIN 26 ein",
+				"targetBlockTag": "photoresistor",
+				"name": "NUM",
+				"to": "26"
+			},
+			{
+				"text": "Baue eine pause ein",
+				"block": "control_wait",
+				"previousBlock": "debug_print"
+			},
+			{
+				"type": "dialog",
+				"title": "Ausprobieren",
+				"text": "Nachdem du den Code gestartet hast, nehme das Kabel und stecke es in die LED rein und schau wie sich der Licht-wert in der Konsole verändert!",
+				"closeButton": "Ok"
+			}
+		]
+	},
+	{
+		"name": "RGB LED steuern",
+		"instructions": [
+			{
+				"type": "dialog",
+				"title": "Wiring",
+				"text": "Stecke auf dem Steckbrett:<br><img src=\"PICOSCRATCHSERVER/img/rgb-wiring.png\">",
+				"closeButton": "Fertig"
+			},
+			{
+				"text": "Nehme einen \"Setze RGB LED R: ... G: ... B: ... Farbe zu ...\" block und setze deine Lieblingsfarbe",
+				"block": "pico_rgb_led",
+				"previousBlock": "event_whenflagclicked",
+				"blockTag": "rgb"
+			},
+			{
+				"type": "changeblock",
+				"text": "Gebe den bei G den PIN 1 ein",
+				"targetBlockTag": "rgb",
+				"name": "NUM",
+				"to": "1"
+			},
+			{
+				"type": "changeblock",
+				"text": "Gebe den bei B den PIN 2 ein",
+				"targetBlockTag": "rgb",
+				"name": "NUM",
+				"to": "2"
 			}
 		]
 	}

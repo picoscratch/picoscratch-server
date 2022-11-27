@@ -16,10 +16,23 @@
 		td:nth-of-type(odd) {
 			background-color: #2e2e2e;
 		}
+		input {
+			background-color: #1d1d1d;
+			font-size: 1.5rem;
+			padding-left: 5px;
+			color: white;
+			border-style: solid;
+			border-color: #2e2e2e;
+			border-radius: 10px;
+		}
 	</style>
 </head>
-<body>
-	<div style="display: flex; gap: 15px; flex-direction: column;">
+<body style="margin: 0;">
+	<div id="login" style="display: flex; height: 100vh; flex-direction: column; align-items: center; justify-content: center; gap: 5px;">
+		<h1>PicoScratch Server</h1>
+		<input type="password" placeholder="Password" id="pw" disabled>
+	</div>
+	<div style="display: flex; margin: 10px; gap: 15px; flex-direction: column; display: none; transform: scale(0) skew(90deg); opacity: 0; transition: transform 500ms, opacity 1s;" id="main">
 		<div style="padding: 5px; background-color: #1d1d1d; border-color: #2e2e2e; border-width: 2px; border-style: solid; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-direction: column;">
 			<h1 style="margin: 0;">Leaderboard</h1>
 			<table id="leaderboard" style="font-size: 1.5rem;"></table>
@@ -31,14 +44,14 @@
 		</div>
 	</div>
 	<script>
-		const ws = new WebSocket("ws://" + location.host);
+		let ws = new WebSocket("ws://" + location.host);
 		let leaderboard = [];
 		function renderLeaderboard() {
 			while (document.getElementById("leaderboard").firstChild) {
 				document.getElementById("leaderboard").removeChild(document.getElementById("leaderboard").lastChild);
 			}
 			const tr = document.createElement("tr");
-			["Platz", "Name", "Level"].forEach(s => {
+			["Platz", "Name", "Level", "Quiz %"].forEach(s => {
 				const td = document.createElement("th");
 				td.innerText = s;
 				tr.appendChild(td);
@@ -57,17 +70,34 @@
 				const level = document.createElement("td");
 				level.innerText = player.level;
 				tr.appendChild(level);
+				const percentage = document.createElement("td");
+				percentage.innerText = player.percentage;
+				tr.appendChild(percentage);
 				document.getElementById("leaderboard").appendChild(tr);
 			}
 		}
+		document.querySelector("#pw").addEventListener("keypress", (e) => {
+			if(e.key != "Enter") return;
+			document.querySelector("#pw").disabled = true;
+			ws.send("admin " + document.querySelector("#pw").value);
+		})
+		document.querySelector("#pw").focus();
 		ws.addEventListener("open", () => {
-			ws.send("admin lulzhaha");
+			document.querySelector("#pw").disabled = false;
 		})
 		ws.addEventListener("message", (data) => {
 			const msg = data.data.toString();
 			if(msg == "declined") {
+				document.querySelector("#pw").disabled = false;
+				document.querySelector("#pw").value = "";
 				console.log("Declined");
 			} else if(msg.startsWith("approved")) {
+				document.querySelector("#login").style.display = "none";
+				document.querySelector("#main").style.display = "flex";
+				setTimeout(() => {
+					document.querySelector("#main").style.transform = "";
+					document.querySelector("#main").style.opacity = "1";
+				}, 100);
 				leaderboard = JSON.parse(msg.split("approved ", 2)[1]);
 				renderLeaderboard();
 			} else if(msg.startsWith("update")) {

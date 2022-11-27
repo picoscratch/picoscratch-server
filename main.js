@@ -52,11 +52,26 @@ function readLeaderboard() {
 	}
 }
 
+function isWhatPercentOf(numA, numB) {
+  return (numA / numB) * 100;
+}
+
+function calculatePercentages(leaderboard) {
+	for(let i = 0; i < leaderboard.length; i++) {
+		const percent = isWhatPercentOf(leaderboard[i].correctqs, leaderboard[i].answeredqs);
+		leaderboard[i].percentage = isNaN(percent) ? 100 : Math.floor(percent);
+	}
+	return leaderboard;
+}
+
 /*
 {
 	name: "Jannik",
-	level: 1
+	level: 1,
+	answeredqs: 2,
+	correctqs: 1
 }
+use answeredqs and correctqs to calculate percentage
 */
 
 let admins = [];
@@ -86,7 +101,7 @@ wss.on("connection", (ws) => {
 			if(leaderboard.find(u => u.name == name)) {
 				current_level = leaderboard.find(u => u.name == name).level;
 			} else {
-				leaderboard.push({name, level: 1});
+				leaderboard.push({name, level: 1, answeredqs: 0, correctqs: 0, percentage: 100});
 			}
 			leaderboard = leaderboard.sort((a, b) => b.level - a.level);
 			writeFileSync("leaderboard.json", JSON.stringify(leaderboard), { encoding: "utf-8" })
@@ -116,6 +131,17 @@ wss.on("connection", (ws) => {
 				return;
 			}
 			current_level++;
+			let leaderboard = readLeaderboard();
+			leaderboard.find(u => u.name == name).level = current_level;
+			if(command[1]) {
+				leaderboard.find(u => u.name == name).answeredqs = leaderboard.find(u => u.name == name).answeredqs + parseInt(command[1]);
+			}
+			if(command[2]) {
+				leaderboard.find(u => u.name == name).correctqs = leaderboard.find(u => u.name == name).correctqs + parseInt(command[2]);
+			}
+			leaderboard = leaderboard.sort((a, b) => b.level - a.level);
+			leaderboard = calculatePercentages(leaderboard);
+			writeFileSync("leaderboard.json", JSON.stringify(leaderboard), { encoding: "utf-8" })
 			if(!tasks[current_level]) {
 				if(!leaderboardpushers.includes(ws)) {
 					ws.send("update " + JSON.stringify(readLeaderboard()));
@@ -123,10 +149,6 @@ wss.on("connection", (ws) => {
 				}
 				ws.send("finished");
 			}
-			let leaderboard = readLeaderboard();
-			leaderboard.find(u => u.name == name).level = current_level;
-			leaderboard = leaderboard.sort((a, b) => b.level - a.level);
-			writeFileSync("leaderboard.json", JSON.stringify(leaderboard), { encoding: "utf-8" })
 			for(const admin of admins) {
 				admin.send("update " + JSON.stringify(leaderboard));
 			}
