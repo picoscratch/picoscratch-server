@@ -77,7 +77,14 @@ use answeredqs and correctqs to calculate percentage
 let admins = [];
 let leaderboardpushers = [];
 let players = [];
+let people = {};
 let isRunning = false;
+
+function capitalizeWords(arr) {
+  return arr.map(element => {
+    return element.charAt(0).toUpperCase() + element.slice(1).toLowerCase();
+  });
+}
 
 wss.on("connection", (ws) => {
 	let name = "UNKNOWN NAME";
@@ -96,7 +103,8 @@ wss.on("connection", (ws) => {
 			}
 		} else if(command[0] == "identify") {
 			command.splice(0, 1);
-			name = command.join(" ");
+			name = command.join(" ").trim();
+			name = capitalizeWords(name.split(" ")).join(" ");
 			let leaderboard = readLeaderboard();
 			if(leaderboard.find(u => u.name == name)) {
 				current_level = leaderboard.find(u => u.name == name).level;
@@ -105,6 +113,7 @@ wss.on("connection", (ws) => {
 			}
 			leaderboard = leaderboard.sort((a, b) => b.level - a.level);
 			writeFileSync("leaderboard.json", JSON.stringify(leaderboard), { encoding: "utf-8" })
+			people[name] = ws;
 			for(const admin of admins) {
 				admin.send("update " + JSON.stringify(leaderboard));
 			}
@@ -158,20 +167,51 @@ wss.on("connection", (ws) => {
 		} else if(command[0] == "leaderboard") {
 			ws.send("leaderboard " + JSON.stringify(readLeaderboard()));
 		} else if(command[0] == "start") {
-			isRunning = true;
 			if(admins.includes(ws)) {
+				isRunning = true;
 				for(const player of players) {
 					player.send("start");
 				}
 			}
 		} else if(command[0] == "end") {
-			isRunning = false;
 			if(admins.includes(ws)) {
+				isRunning = false;
 				for(const player of players) {
 					player.send("end");
 				}
 			}
+		} else if(command[0] == "kick") {
+			if(admins.includes(ws)) {
+				command.shift();
+				if(people[command.join(" ")]) {
+					people[command.join(" ")].send("kick");
+					people[command.join(" ")].close();
+				}
+			}
+		} else if(command[0] == "delete") {
+			if(admins.includes(ws)) {
+				command.shift();
+				if(people[command.join(" ")]) {
+					people[command.join(" ")].send("kick");
+					people[command.join(" ")].close();
+				}
+				let leaderboard = readLeaderboard();
+				leaderboard.splice(leaderboard.findIndex(u => u.name == name), 1);
+				leaderboard = leaderboard.sort((a, b) => b.level - a.level);
+				writeFileSync("leaderboard.json", JSON.stringify(leaderboard), { encoding: "utf-8" })
+				for(const admin of admins) {
+					admin.send("update " + JSON.stringify(leaderboard));
+				}
+				for(const pusher of leaderboardpushers) {
+					pusher.send("update " + JSON.stringify(leaderboard));
+				}
+			}
 		}
+	})
+	ws.on("close", () => {
+		if(name == "UNKNOWN NAME") return;
+		if(people[name]) delete people[name];
+		if(players.includes(ws)) players.splice(players.indexOf(ws), 1);
 	})
 })
 
