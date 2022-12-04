@@ -250,7 +250,7 @@
 		]
 	},
 	{
-		"name": "RGB LED steuern",
+		"name": "RGB cycle",
 		"instructions": [
 			{
 				"type": "dialog",
@@ -259,30 +259,11 @@
 				"closeButton": "Fertig"
 			},
 			{
-				"text": "Nehme einen \"Setze RGB LED R: ... G: ... B: ... Farbe zu ...\" block und setze deine Lieblingsfarbe",
-				"block": "components_rgb_led",
-				"previousBlock": "event_whenflagclicked",
-				"blockTag": "rgb"
+				"type": "dialog",
+				"title": "RGB LED",
+				"text": "Eine RGB LED kann alle Farben anzeigen. Die RGB LED hat 4 Pins, sie sind wiefolgt belegt: Rot, GND, Grün, Blau. Das lange Bein ist GND. Aus Rot, grün und blau kann man alle Farben mixen.<br>Die RGB LED funktioniert so wie 3 LEDs in einer, eine Rot, eine Grün und eine Blau.",
+				"closeButton": "Ok"
 			},
-			{
-				"type": "changeblock",
-				"text": "Gebe den bei G den PIN 1 ein",
-				"targetBlockTag": "rgb",
-				"name": "NUM",
-				"to": "1"
-			},
-			{
-				"type": "changeblock",
-				"text": "Gebe den bei B den PIN 2 ein",
-				"targetBlockTag": "rgb",
-				"name": "NUM",
-				"to": "2"
-			}
-		]
-	},
-	{
-		"name": "RGB cycle",
-		"instructions": [
 			{
 				"text": "Nehme einen \"Setze LED Helligkeit\" Block",
 				"block": "components_setledbrightness",
@@ -566,6 +547,28 @@
 				"targetBlockTag": "bLoopSleep",
 				"name": "NUM",
 				"to": "0.01"
+			},
+			{
+				"type": "quiz",
+				"question": "Wie funktioniert eine RGB LED?",
+				"answers": [
+					"Sie hat 3 LEDs in einer und kann dadurch alle Farben mischen",
+					"Die LED kann die Farbe des Blitzes anpassen",
+					"Durch Magie",
+					"Garnicht"
+				],
+				"correct": 0
+			},
+			{
+				"type": "quiz",
+				"question": "Was ist die Pinbelegung der RGB LED?",
+				"answers": [
+					"Cyan, Magenta, Gelb, GND",
+					"Blau, GND, Rot, Grün",
+					"Grün, GND, Rot, Blau",
+					"Rot, GND, Grün, Blau"
+				],
+				"correct": 3
 			}
 		]
 	},
@@ -722,6 +725,86 @@
 				"targetBlockTag": "thirdcall",
 				"name": "TEXT",
 				"to": "2"
+			}
+		]
+	},
+	{
+		"name": "Ultraschall Sensor",
+		"instructions": [
+			{
+				"type": "dialog",
+				"title": "Wiring",
+				"text": "Stecke auf dem Steckbrett:<br><img src=\"PICOSCRATCHSERVER/img/ultrasonic-wiring.png\">",
+				"closeButton": "Fertig"
+			},
+			{
+				"type": "dialog",
+				"title": "Ultraschallsensor",
+				"text": "Ein Ultraschallsensor kann Distanzen in cm messen. Das funktioniert indem der Ultraschallsensor einen Ultraschall sendet, und misst wie lange es dauert bis der Schall aufprallt und zurück kommt.<br>Die Pins auf dem Ultraschallsensor sind so belegt: 3.3V, Trigger, Echo, GND. 3.3V wird mit Strom verbunden (3.3 Volt vom Pico), wir senden ein sehr kurzes Stromsignal bei Trigger, um den Ultraschallsensor zu sagen, das er messen soll.<br>Der Ultraschallsensor sendet dann ein kurzes Echo Stromsignal wenn der Schall zurück kam. GND ist Ground, der Strom muss wieder zurückfließen damit der Stromkreis funktioniert.<br>Das ist aber alles nicht umbedingt hier wichtig, weil all das unter einem < Ultraschall Distanz > Block ist",
+				"closeButton": "Ok"
+			},
+			{
+				"text": "Nehme eine unendliche Schleife",
+				"block": "control_forever",
+				"previousBlock": "event_whenflagclicked"
+			},
+			{
+				"text": "Nehme einen \"Gebe ... in der Konsole aus\" block",
+				"block": "debug_print",
+				"parentBlock": "control_forever"
+			},
+			{
+				"text": "Nehme einen \"verbinde ... und ...\" block",
+				"block": "operator_join",
+				"parentBlock": "debug_print",
+				"blockTag": "join"
+			},
+			{
+				"text": "Nehme einen \"Ultraschall Distanz\" Block",
+				"block": "components_ultrasonic",
+				"parentBlock": "operator_join",
+				"blockTag": "ultrasonic"
+			},
+			{
+				"type": "changeblock",
+				"text": "Setze den Echo-PIN zu 1",
+				"targetBlockTag": "ultrasonic",
+				"name": "NUM",
+				"to": "1"
+			},
+			{
+				"type": "changeblock",
+				"text": "Setze den zweiten Wert zu \" cm\"",
+				"targetBlockTag": "join",
+				"name": "TEXT",
+				"to": " cm"
+			},
+			{
+				"text": "Baue eine pause ein",
+				"block": "control_wait",
+				"previousBlock": "debug_print"
+			},
+			{
+				"type": "quiz",
+				"question": "Was ist die Pinbelegung vom Ultraschallsensor?",
+				"answers": [
+					"GND, Trigger, Echo, GND",
+					"3.3V, Trigger, Echo, GND",
+					"3.3V, Echo, Trigger, GND",
+					"GND, Echo, Trigger, GND"
+				],
+				"correct": 1
+			},
+			{
+				"type": "quiz",
+				"question": "Wie funktioniert ein Ultraschallsensor",
+				"answers": [
+					"Er hat ein Lineal eingebaut",
+					"Er sendet einen Schall und kann durch die Tonfrequenz den Abstand messen",
+					"Er sendet einen Schall und wartet bis er zurück kommt",
+					"Er sendet einen Schall, das Objekt wo es Abprallt sagt dem Sensor die Distanz"
+				],
+				"correct": 2
 			}
 		]
 	}
