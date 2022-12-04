@@ -28,23 +28,23 @@
 			},
 			{
 				"text": "Nehme ein \"Schalte interne LED an\" block und ziehe ihn unter den \"Wiederhole\" block",
-				"block": "pico_internalledon",
+				"block": "components_internalledon",
 				"parentBlock": "control_forever"
 			},
 			{
 				"text": "Baue eine pause mit einem \"warte X sekunden\" block",
 				"block": "control_wait",
-				"previousBlock": "pico_internalledon"
+				"previousBlock": "components_internalledon"
 			},
 			{
 				"text": "Schalte die LED wieder aus mit einem \"Schalte interne LED aus\" block",
-				"block": "pico_internalledoff",
+				"block": "components_internalledoff",
 				"previousBlock": "control_wait"
 			},
 			{
 				"text": "Baue eine weitere pause ein.",
 				"block": "control_wait",
-				"previousBlock": "pico_internalledoff"
+				"previousBlock": "components_internalledoff"
 			},
 			{
 				"type": "dialog",
@@ -87,23 +87,23 @@
 			},
 			{
 				"text": "Nehme ein \"Schalte LED an\" block und ziehe ihn unter den \"Wiederhole\" block",
-				"block": "pico_ledon",
+				"block": "components_ledon",
 				"parentBlock": "control_forever"
 			},
 			{
 				"text": "Baue eine pause mit einem \"warte X sekunden\" block",
 				"block": "control_wait",
-				"previousBlock": "pico_ledon"
+				"previousBlock": "components_ledon"
 			},
 			{
 				"text": "Schalte die LED wieder aus mit einem \"Schalte LED aus\" block",
-				"block": "pico_ledoff",
+				"block": "components_ledoff",
 				"previousBlock": "control_wait"
 			},
 			{
 				"text": "Baue eine weitere pause ein.",
 				"block": "control_wait",
-				"previousBlock": "pico_ledoff"
+				"previousBlock": "components_ledoff"
 			},
 			{
 				"type": "quiz",
@@ -145,7 +145,7 @@
 			},
 			{
 				"text": "Ziehe einen \"Ist Knopf gedrückt?\" block in den \"falls ... sonst\" block",
-				"block": "pico_buttonstatus",
+				"block": "components_buttonstatus",
 				"parentBlock": "control_if_else",
 				"blockTag": "btnpressed"
 			},
@@ -158,13 +158,13 @@
 			},
 			{
 				"text": "Schalte die LED ein, wenn ja",
-				"block": "pico_ledon",
+				"block": "components_ledon",
 				"parentBlock": "control_if_else",
 				"parentStack": "SUBSTACK"
 			},
 			{
 				"text": "Schalte die LED aus, wenn nicht",
-				"block": "pico_ledoff",
+				"block": "components_ledoff",
 				"parentBlock": "control_if_else",
 				"parentStack": "SUBSTACK2"
 			}
@@ -186,13 +186,13 @@
 			},
 			{
 				"text": "Nehme einen \"Setze LED helligkeit\" block",
-				"block": "pico_setledbrightness",
+				"block": "components_setledbrightness",
 				"parentBlock": "control_forever"
 			},
 			{
 				"text": "Nehme einen \"Potentiometer wert\" block",
-				"block": "pico_potentiometer",
-				"parentBlock": "pico_setledbrightness",
+				"block": "components_potentiometer",
+				"parentBlock": "components_setledbrightness",
 				"blockTag": "poti"
 			},
 			{
@@ -225,7 +225,7 @@
 			},
 			{
 				"text": "Nehme einen \"Fotoresistor ... Lichtlevel\" block",
-				"block": "pico_photoresistor",
+				"block": "components_photoresistor",
 				"parentBlock": "debug_print",
 				"blockTag": "photoresistor"
 			},
@@ -260,7 +260,7 @@
 			},
 			{
 				"text": "Nehme einen \"Setze RGB LED R: ... G: ... B: ... Farbe zu ...\" block und setze deine Lieblingsfarbe",
-				"block": "pico_rgb_led",
+				"block": "components_rgb_led",
 				"previousBlock": "event_whenflagclicked",
 				"blockTag": "rgb"
 			},
@@ -276,6 +276,451 @@
 				"text": "Gebe den bei B den PIN 2 ein",
 				"targetBlockTag": "rgb",
 				"name": "NUM",
+				"to": "2"
+			}
+		]
+	},
+	{
+		"name": "RGB cycle",
+		"instructions": [
+			{
+				"text": "Nehme einen \"Setze LED Helligkeit\" Block",
+				"block": "components_setledbrightness",
+				"previousBlock": "event_whenflagclicked",
+				"blockTag": "firstresetblock"
+			},
+			{
+				"type": "changeblock",
+				"text": "Setze die Helligkeit zu 0",
+				"targetBlockTag": "firstresetblock",
+				"name": "NUM",
+				"to": "0"
+			},
+			{
+				"type": "comment",
+				"blockTag": "firstresetblock",
+				"content": "Zurücksetzen der RGB LED"
+			},
+			{
+				"text": "Nehme noch einen",
+				"block": "components_setledbrightness",
+				"previousTag": "firstresetblock",
+				"blockTag": "secondresetblock"
+			},
+			{
+				"type": "changeblock",
+				"text": "Nehme den PIN 1",
+				"targetBlockTag": "secondresetblock",
+				"name": "NUM",
+				"to": "1"
+			},
+			{
+				"type": "changeblock",
+				"text": "Setze die Helligkeit zu 0",
+				"targetBlockTag": "secondresetblock",
+				"name": "NUM",
+				"to": "0"
+			},
+			{
+				"text": "Noch ein Helligkeit Block",
+				"block": "components_setledbrightness",
+				"previousTag": "secondresetblock",
+				"blockTag": "thirdresetblock"
+			},
+			{
+				"type": "changeblock",
+				"text": "Nehme den PIN 2",
+				"targetBlockTag": "thirdresetblock",
+				"name": "NUM",
+				"to": "2"
+			},
+			{
+				"type": "changeblock",
+				"text": "Setze die Helligkeit zu 0",
+				"targetBlockTag": "thirdresetblock",
+				"name": "NUM",
+				"to": "0"
+			},
+
+
+
+			{
+				"type": "varcreate",
+				"text": "Erstelle die Variable \"r\"",
+				"vartype": "",
+				"comment": "vartype empty means variable, vartype list means list",
+				"varTag": "r"
+			},
+			{
+				"text": "Nehme einen \"Setze Variable zu\" Block",
+				"block": "data_setvariableto",
+				"previousBlock": "components_setledbrightness",
+				"blockTag": "setRvar"
+			},
+			{
+				"type": "comment",
+				"blockTag": "setRvar",
+				"content": "Setzen der Variablen"
+			},
+
+
+
+			{
+				"text": "Nehme einen \"Wiederhole\" Block",
+				"block": "control_repeat",
+				"previousTag": "setRvar",
+				"blockTag": "rLoop"
+			},
+			{
+				"type": "changeblock",
+				"text": "Setze die Anzahl zu 255",
+				"targetBlockTag": "rLoop",
+				"name": "NUM",
+				"to": "255"
+			},
+			{
+				"type": "comment",
+				"blockTag": "rLoop",
+				"content": "Rot-Schleife"
+			},
+			{
+				"text": "Nehme noch mal einen \"Setze LED Helligkeit\" Block",
+				"block": "components_setledbrightness",
+				"parentTag": "rLoop",
+				"blockTag": "rLoopBrightness"
+			},
+			{
+				"type": "varblock",
+				"text": "Setze die \"r\" Variable als Helligkeit",
+				"parentTag": "rLoopBrightness",
+				"varTag": "r"
+			},
+			{
+				"text": "Nehme einen \"Ändere Variable um\" Block",
+				"block": "data_changevariableby",
+				"previousTag": "rLoopBrightness",
+				"blockTag": "rLoopChange"
+			},
+			{
+				"text": "Baue eine pause ein",
+				"block": "control_wait",
+				"previousTag": "rLoopChange",
+				"blockTag": "rLoopSleep"
+			},
+			{
+				"type": "changeblock",
+				"text": "Setze den Delay zu 0.01 Sekunden",
+				"todo": "Allow varTags to be embedded into the text element, so it shows as the users' custom name",
+				"targetBlockTag": "rLoopSleep",
+				"name": "NUM",
+				"to": "0.01"
+			},
+
+
+
+			{
+				"type": "varcreate",
+				"text": "Erstelle die Variable \"g\"",
+				"vartype": "",
+				"comment": "vartype empty means variable, vartype list means list",
+				"varTag": "g"
+			},
+			{
+				"text": "Nehme einen \"Setze Variable zu\" Block, und setze ihn unter den anderen \"Setze Variable zu\" block",
+				"block": "data_setvariableto",
+				"previousTag": "setRvar",
+				"blockTag": "setGvar"
+			},
+
+
+
+			{
+				"text": "Nehme einen \"Wiederhole\" Block",
+				"block": "control_repeat",
+				"previousTag": "rLoop",
+				"blockTag": "gLoop"
+			},
+			{
+				"type": "changeblock",
+				"text": "Setze die Anzahl zu 255",
+				"targetBlockTag": "gLoop",
+				"name": "NUM",
+				"to": "255"
+			},
+			{
+				"type": "comment",
+				"blockTag": "gLoop",
+				"content": "Grün-Schleife"
+			},
+			{
+				"text": "Nehme noch mal einen \"Setze LED Helligkeit\" Block",
+				"block": "components_setledbrightness",
+				"parentTag": "gLoop",
+				"blockTag": "gLoopBrightness"
+			},
+			{
+				"type": "changeblock",
+				"text": "Nehme den PIN 1",
+				"targetBlockTag": "gLoopBrightness",
+				"name": "NUM",
+				"to": "1"
+			},
+			{
+				"type": "varblock",
+				"text": "Setze die \"g\" Variable als Helligkeit",
+				"parentTag": "gLoopBrightness",
+				"varTag": "g"
+			},
+			{
+				"text": "Nehme einen \"Ändere Variable um\" Block",
+				"block": "data_changevariableby",
+				"previousTag": "gLoopBrightness",
+				"blockTag": "gLoopChange"
+			},
+			{
+				"text": "Baue eine pause ein",
+				"block": "control_wait",
+				"previousTag": "gLoopChange",
+				"blockTag": "gLoopSleep"
+			},
+			{
+				"type": "changeblock",
+				"text": "Setze den Delay zu 0.01 Sekunden",
+				"todo": "Allow varTags to be embedded into the text element, so it shows as the users' custom name",
+				"targetBlockTag": "gLoopSleep",
+				"name": "NUM",
+				"to": "0.01"
+			},
+
+
+
+			{
+				"type": "varcreate",
+				"text": "Erstelle die Variable \"b\"",
+				"vartype": "",
+				"comment": "vartype empty means variable, vartype list means list",
+				"varTag": "b"
+			},
+			{
+				"text": "Nehme einen \"Setze Variable zu\" Block, und setze ihn unter den anderen \"Setze Variable zu\" block",
+				"block": "data_setvariableto",
+				"previousTag": "setGvar",
+				"blockTag": "setBvar"
+			},
+
+
+
+			{
+				"text": "Nehme einen \"Wiederhole\" Block",
+				"block": "control_repeat",
+				"previousTag": "gLoop",
+				"blockTag": "bLoop"
+			},
+			{
+				"type": "changeblock",
+				"text": "Setze die Anzahl zu 255",
+				"targetBlockTag": "bLoop",
+				"name": "NUM",
+				"to": "255"
+			},
+			{
+				"type": "comment",
+				"blockTag": "bLoop",
+				"content": "Blau-Schleife"
+			},
+			{
+				"text": "Nehme noch mal einen \"Setze LED Helligkeit\" Block",
+				"block": "components_setledbrightness",
+				"parentTag": "bLoop",
+				"blockTag": "bLoopBrightness"
+			},
+			{
+				"type": "changeblock",
+				"text": "Nehme den PIN 2",
+				"targetBlockTag": "bLoopBrightness",
+				"name": "NUM",
+				"to": "2"
+			},
+			{
+				"type": "varblock",
+				"text": "Setze die \"b\" Variable als Helligkeit",
+				"parentTag": "bLoopBrightness",
+				"varTag": "b"
+			},
+			{
+				"text": "Nehme einen \"Ändere Variable um\" Block",
+				"block": "data_changevariableby",
+				"previousTag": "bLoopBrightness",
+				"blockTag": "bLoopChange"
+			},
+			{
+				"text": "Baue eine pause ein",
+				"block": "control_wait",
+				"previousTag": "bLoopChange",
+				"blockTag": "bLoopSleep"
+			},
+			{
+				"type": "changeblock",
+				"text": "Setze den Delay zu 0.01 Sekunden",
+				"todo": "Allow varTags to be embedded into the text element, so it shows as the users' custom name",
+				"targetBlockTag": "bLoopSleep",
+				"name": "NUM",
+				"to": "0.01"
+			}
+		]
+	},
+	{
+		"name": "Eigene Blöcke",
+		"noclear": true,
+		"startxml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables><variable type=\"\" id=\"(}|P`33%1NOiveIj66y9\" islocal=\"false\" iscloud=\"false\">r</variable><variable type=\"\" id=\"?Ap~Lu}C)gM1`s!VT!KY\" islocal=\"false\" iscloud=\"false\">g</variable><variable type=\"\" id=\"m.)raX-J#,hCcD7(O8W(\" islocal=\"false\" iscloud=\"false\">b</variable></variables><block type=\"event_whenflagclicked\" id=\"{!5G[{H3qE2[NMQ;pK)W\" x=\"300\" y=\"400\"><next><block type=\"components_setledbrightness\" id=\"7iMZeHa%[1%8YZjL9hY[\"><comment id=\"~y0sGnp+$t~,PEI4XsOD\" pinned=\"true\" h=\"200\" w=\"200\" x=\"672\" y=\"460\" minimized=\"false\">Zurücksetzen der RGB LED</comment><value name=\"PIN\"><shadow type=\"math_number\" id=\"f+U5Z2LVm}!|}x#T{j^r\"><field name=\"NUM\">0</field></shadow></value><value name=\"BRIGHTNESS\"><shadow type=\"math_number\" id=\"Q/TV4-C6qRh#xeIP;8*k\"><field name=\"NUM\">0</field></shadow></value><next><block type=\"components_setledbrightness\" id=\"0Ca1s%^+$S5gL+7001`V\"><value name=\"PIN\"><shadow type=\"math_number\" id=\"bwt~.%j}4~-O+t-lewu$\"><field name=\"NUM\">1</field></shadow></value><value name=\"BRIGHTNESS\"><shadow type=\"math_number\" id=\"5?NE8e*9$X{hK!RA{u_l\"><field name=\"NUM\">0</field></shadow></value><next><block type=\"components_setledbrightness\" id=\"uNcIV%NaP}YY%uX+Xf=(\"><value name=\"PIN\"><shadow type=\"math_number\" id=\"Mzyv{)k1dVVH#uA:(J21\"><field name=\"NUM\">2</field></shadow></value><value name=\"BRIGHTNESS\"><shadow type=\"math_number\" id=\"*+1-4;:x6{IK0MQCw+]N\"><field name=\"NUM\">0</field></shadow></value><next><block type=\"data_setvariableto\" id=\"9A;/l?=b]9*L+mic**k;\"><field name=\"VARIABLE\" id=\"(}|P`33%1NOiveIj66y9\" variabletype=\"\">r</field><comment id=\"eVd$RW33]|Zz1CY{ozw3\" pinned=\"true\" h=\"200\" w=\"200\" x=\"733\" y=\"590.6666666666666\" minimized=\"false\">Setzen der Variablen</comment><value name=\"VALUE\"><shadow type=\"text\" id=\"*:F;]#IefGV`PTq;-vEa\"><field name=\"TEXT\">0</field></shadow></value><next><block type=\"data_setvariableto\" id=\"S6?Ozvy^J1s!KOJig[V:\"><field name=\"VARIABLE\" id=\"?Ap~Lu}C)gM1`s!VT!KY\" variabletype=\"\">g</field><value name=\"VALUE\"><shadow type=\"text\" id=\"._k^/u_:H,;hU~i$RD?W\"><field name=\"TEXT\">0</field></shadow></value><next><block type=\"data_setvariableto\" id=\"~?eK.,w-Cu|?8fm,cbpQ\"><field name=\"VARIABLE\" id=\"m.)raX-J#,hCcD7(O8W(\" variabletype=\"\">b</field><value name=\"VALUE\"><shadow type=\"text\" id=\"6WYvkt@ZF~xf{NE?@#^S\"><field name=\"TEXT\">0</field></shadow></value><next><block type=\"control_repeat\" id=\"MQjJS[oMVNXDKgiWDNb{\"><comment id=\"2fcs@YMr%NwiR%be`hs8\" pinned=\"true\" h=\"200\" w=\"200\" x=\"753\" y=\"790.6666666666667\" minimized=\"false\">Rot-Schleife</comment><value name=\"TIMES\"><shadow type=\"math_whole_number\" id=\".lWq{$y({/MSZlwg@RfV\"><field name=\"NUM\">255</field></shadow></value><statement name=\"SUBSTACK\"><block type=\"components_setledbrightness\" id=\"GHQh:QtQpaUnrkubKoP)\"><value name=\"PIN\"><shadow type=\"math_number\" id=\"v(v.9:8#+`q#,4*EZ!{B\"><field name=\"NUM\">0</field></shadow></value><value name=\"BRIGHTNESS\"><shadow type=\"math_number\" id=\"O[.r`4-~=#!e{bI~*U[=\"><field name=\"NUM\">255</field></shadow><block type=\"data_variable\" id=\"l#snZo$q/oS*UZv.X#mR\"><field name=\"VARIABLE\" id=\"(}|P`33%1NOiveIj66y9\" variabletype=\"\">r</field></block></value><next><block type=\"data_changevariableby\" id=\"xpuL+JZ;_!Js0ld^zU|w\"><field name=\"VARIABLE\" id=\"(}|P`33%1NOiveIj66y9\" variabletype=\"\">r</field><value name=\"VALUE\"><shadow type=\"math_number\" id=\"ceRvr8aHVcF91FO:(({p\"><field name=\"NUM\">1</field></shadow></value><next><block type=\"control_wait\" id=\"|snO1rxN%Am/LCaLM(8b\"><value name=\"DURATION\"><shadow type=\"math_positive_number\" id=\"LMAv]v3@x~NXJl}apkYm\"><field name=\"NUM\">0.01</field></shadow></value></block></next></block></next></block></statement><next><block type=\"control_repeat\" id=\"{cj,aX*d.eZ~9mscQwvD\"><comment id=\"1wur6y=l/k8-|6SrBFX7\" pinned=\"true\" h=\"200\" w=\"200\" x=\"780\" y=\"949.3333333333333\" minimized=\"false\">Grün-Schleife</comment><value name=\"TIMES\"><shadow type=\"math_whole_number\" id=\"#$)1}GAodm}ttR?8`W4Y\"><field name=\"NUM\">255</field></shadow></value><statement name=\"SUBSTACK\"><block type=\"components_setledbrightness\" id=\"5d7$eBwA!r$F,=}Wph/*\"><value name=\"PIN\"><shadow type=\"math_number\" id=\"yTx^(]=$N.O=Lxlobate\"><field name=\"NUM\">1</field></shadow></value><value name=\"BRIGHTNESS\"><shadow type=\"math_number\" id=\"THJO.2;6[smdeV@7=TUG\"><field name=\"NUM\">255</field></shadow><block type=\"data_variable\" id=\"u|/*VSJmTAN_7PbW.pk~\"><field name=\"VARIABLE\" id=\"?Ap~Lu}C)gM1`s!VT!KY\" variabletype=\"\">g</field></block></value><next><block type=\"data_changevariableby\" id=\"-.}{J}aqH2iaNWZPHwe=\"><field name=\"VARIABLE\" id=\"?Ap~Lu}C)gM1`s!VT!KY\" variabletype=\"\">g</field><value name=\"VALUE\"><shadow type=\"math_number\" id=\"BuVVq}KT%*MM+wqc+t#D\"><field name=\"NUM\">1</field></shadow></value><next><block type=\"control_wait\" id=\"|,:uI}+DKk%(H(Y/9ywc\"><value name=\"DURATION\"><shadow type=\"math_positive_number\" id=\"7Cf8%v7[K4wX8m-Cc%U)\"><field name=\"NUM\">0.01</field></shadow></value></block></next></block></next></block></statement><next><block type=\"control_repeat\" id=\"@*YAH@0-%8Rasab8bB^g\"><comment id=\"kNik_Va!,pZuBHvLKXKp\" pinned=\"true\" h=\"200\" w=\"200\" x=\"767\" y=\"1173.3333333333333\" minimized=\"false\">Blau-Schleife</comment><value name=\"TIMES\"><shadow type=\"math_whole_number\" id=\"Q@i@}1TEXz`~A9NHtB!z\"><field name=\"NUM\">255</field></shadow></value><statement name=\"SUBSTACK\"><block type=\"components_setledbrightness\" id=\"Oi)Kj62Mz)Cd23sHwR*D\"><value name=\"PIN\"><shadow type=\"math_number\" id=\"uz;wT:hIIkp!{T^a@:sY\"><field name=\"NUM\">2</field></shadow></value><value name=\"BRIGHTNESS\"><shadow type=\"math_number\" id=\"Ba?038mH@`Wh2-}?sMsU\"><field name=\"NUM\">255</field></shadow><block type=\"data_variable\" id=\"*ol#Vs;$5;PgTB3|%V@a\"><field name=\"VARIABLE\" id=\"m.)raX-J#,hCcD7(O8W(\" variabletype=\"\">b</field></block></value><next><block type=\"data_changevariableby\" id=\"9zAN(=gY!DO[Ap8VCm90\"><field name=\"VARIABLE\" id=\"m.)raX-J#,hCcD7(O8W(\" variabletype=\"\">b</field><value name=\"VALUE\"><shadow type=\"math_number\" id=\"A_V:hc~.%5Rm+{_QnXI^\"><field name=\"NUM\">1</field></shadow></value><next><block type=\"control_wait\" id=\"mkjILpIL{Dq#atg@T`.P\"><value name=\"DURATION\"><shadow type=\"math_positive_number\" id=\"P~BBP;n-w3w2O:)I8H`=\"><field name=\"NUM\">0.01</field></shadow></value></block></next></block></next></block></statement></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></xml>",
+		"varTags": {
+			"r": "(}|P`33%1NOiveIj66y9",
+			"g": "?Ap~Lu}C)gM1`s!VT!KY",
+			"b": "m.)raX-J#,hCcD7(O8W("
+		},
+		"blockTags": {
+			"firstresetblock": "7iMZeHa%[1%8YZjL9hY[",
+			"secondresetblock": "0Ca1s%^+$S5gL+7001`V",
+			"thirdresetblock": "uNcIV%NaP}YY%uX+Xf=(",
+			"setRvar": "9A;/l?=b]9*L+mic**k;",
+			"rLoop": "MQjJS[oMVNXDKgiWDNb{",
+			"rLoopBrightness": "GHQh:QtQpaUnrkubKoP)",
+			"rLoopChange": "xpuL+JZ;_!Js0ld^zU|w",
+			"rLoopSleep": "|snO1rxN%Am/LCaLM(8b",
+			"setGvar": "S6?Ozvy^J1s!KOJig[V:",
+			"gLoop": "{cj,aX*d.eZ~9mscQwvD",
+			"gLoopBrightness": "5d7$eBwA!r$F,=}Wph/*",
+			"gLoopChange": "-.}{J}aqH2iaNWZPHwe=",
+			"gLoopSleep": "|,:uI}+DKk%(H(Y/9ywc",
+			"setBvar": "~?eK.,w-Cu|?8fm,cbpQ",
+			"bLoop": "@*YAH@0-%8Rasab8bB^g",
+			"bLoopBrightness": "Oi)Kj62Mz)Cd23sHwR*D",
+			"bLoopChange": "9zAN(=gY!DO[Ap8VCm90",
+			"bLoopSleep": "mkjILpIL{Dq#atg@T`.P"
+		},
+		"instructions": [
+			{
+				"type": "customblock",
+				"text": "Erstelle einen neuen Block für \"LED cycle\", mit einem argument \"pin\"",
+				"args": 1,
+				"blockTag": "ledcycle"
+			},
+			{
+				"type": "delete",
+				"text": "Lösche alles ab der zweiten Schleife",
+				"targetBlockTag": "gLoop"
+			},
+			{
+				"type": "varcreate",
+				"text": "Erstelle eine neue Variable \"c\"",
+				"vartype": "",
+				"comment": "vartype empty means variable, vartype list means list",
+				"varTag": "c"
+			},
+			{
+				"type": "changeblock",
+				"text": "Setze die Variable von \"Setze (r) auf (0)\" zu c",
+				"targetBlockTag": "setRvar",
+				"name": "VARIABLE",
+				"valueVarTag": "c"
+			},
+
+			{
+				"type": "move",
+				"text": "Bewege die erste Schleife zum \"LED cycle\" Block",
+				"fromBlockTag": "rLoop",
+				"toPreviousBlockTag": "ledcycle"
+			},
+			{
+				"type": "customblockarg",
+				"text": "Nehme das Argument \"pin\" und ziehe es in das erste Argument vom \"Setze LED Helligkeit\" Block",
+				"parentTag": "rLoopBrightness"
+			},
+			{
+				"type": "changeblock",
+				"text": "Setze die Variable von \"Ändere (r) um (1)\" zu c",
+				"targetBlockTag": "rLoopChange",
+				"name": "VARIABLE",
+				"valueVarTag": "c"
+			},
+
+			{
+				"type": "delete",
+				"text": "Lösche alles nach dem \"Setze (c) auf (0)\" Block",
+				"targetBlockTag": "setGvar"
+			},
+			{
+				"type": "vardelete",
+				"text": "Lösche die Variable \"r\"",
+				"targetVarTag": "r"
+			},
+			{
+				"type": "vardelete",
+				"text": "Lösche die Variable \"g\"",
+				"targetVarTag": "g"
+			},
+			{
+				"type": "vardelete",
+				"text": "Lösche die Variable \"b\"",
+				"targetVarTag": "b"
+			},
+			{
+				"type": "move",
+				"text": "Bewege den Setze Variable Block zum \"LED cycle\" Block",
+				"fromBlockTag": "setRvar",
+				"toPreviousBlockTag": "ledcycle"
+			},
+			{
+				"type": "varblock",
+				"text": "Setze die \"c\" Variable als Helligkeit in der Schleife",
+				"parentTag": "rLoopBrightness",
+				"varTag": "c"
+			},
+
+
+			{
+				"type": "customblockcall",
+				"text": "Nehme deinen Block",
+				"previousTag": "thirdresetblock",
+				"targetBlockTag": "rgbcycle",
+				"blockTag": "firstcall"
+			},
+			{
+				"type": "changeblock",
+				"text": "Setze das Argument zu 0",
+				"todo": "Allow varTags to be embedded into the text element, so it shows as the users' custom name",
+				"targetBlockTag": "firstcall",
+				"name": "TEXT",
+				"to": "0"
+			},
+			{
+				"type": "customblockcall",
+				"text": "Nehme deinen Block nochmal",
+				"previousTag": "firstcall",
+				"targetBlockTag": "rgbcycle",
+				"blockTag": "secondcall"
+			},
+			{
+				"type": "changeblock",
+				"text": "Setze das Argument zu 1",
+				"todo": "Allow varTags to be embedded into the text element, so it shows as the users' custom name",
+				"targetBlockTag": "secondcall",
+				"name": "TEXT",
+				"to": "1"
+			},
+			{
+				"type": "customblockcall",
+				"text": "Nehme deinen Block und ziehe ihn unter den \"Setze (c) auf (0)\" Block",
+				"previousTag": "secondcall",
+				"targetBlockTag": "rgbcycle",
+				"blockTag": "thirdcall"
+			},
+			{
+				"type": "changeblock",
+				"text": "Setze das Argument zu 2",
+				"todo": "Allow varTags to be embedded into the text element, so it shows as the users' custom name",
+				"targetBlockTag": "thirdcall",
+				"name": "TEXT",
 				"to": "2"
 			}
 		]
