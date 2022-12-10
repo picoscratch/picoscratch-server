@@ -4,6 +4,7 @@ import { createServer } from "http";
 
 const tasks = JSON.parse(readFileSync("tasks.json", { encoding: "utf-8" }))
 const password = readFileSync("password.txt", { encoding: "utf-8" })
+const school = readFileSync("school.txt", { encoding: "utf-8" })
 
 const server = createServer();
 
@@ -60,6 +61,7 @@ function calculatePercentages(leaderboard) {
 	for(let i = 0; i < leaderboard.length; i++) {
 		const percent = isWhatPercentOf(leaderboard[i].correctqs, leaderboard[i].answeredqs);
 		leaderboard[i].percentage = isNaN(percent) ? 100 : Math.floor(percent);
+		leaderboard[i].xp = ((leaderboard[i].level - 1) * 1357) + (leaderboard[i].correctqs * 136);
 	}
 	return leaderboard;
 }
@@ -75,7 +77,6 @@ use answeredqs and correctqs to calculate percentage
 */
 
 let admins = [];
-let leaderboardpushers = [];
 let players = [];
 let people = {};
 let isRunning = false;
@@ -90,9 +91,10 @@ wss.on("connection", (ws) => {
 	let name = "UNKNOWN NAME";
 	let current_level = 1;
 	players.push(ws);
+	ws.send("school " + school);
 	ws.on("message", (data) => {
 		const command = data.toString().split(" ");
-		console.log(name + ": " + command[0]);
+		console.log(name + ": " + command.join(" "));
 		if(command[0] == "admin") {
 			command.splice(0, 1);
 			if(command.join(" ") == password) {
@@ -109,7 +111,7 @@ wss.on("connection", (ws) => {
 			if(leaderboard.find(u => u.name == name)) {
 				current_level = leaderboard.find(u => u.name == name).level;
 			} else {
-				leaderboard.push({name, level: 1, answeredqs: 0, correctqs: 0, percentage: 100});
+				leaderboard.push({name, level: 1, answeredqs: 0, correctqs: 0, percentage: 100, xp: 0});
 			}
 			leaderboard = leaderboard.sort((a, b) => b.level - a.level);
 			writeFileSync("leaderboard.json", JSON.stringify(leaderboard), { encoding: "utf-8" })
@@ -117,15 +119,17 @@ wss.on("connection", (ws) => {
 			for(const admin of admins) {
 				admin.send("update " + JSON.stringify(leaderboard));
 			}
-			for(const pusher of leaderboardpushers) {
-				pusher.send("update " + JSON.stringify(leaderboard));
+			for(const player of players) {
+				player.send("leaderboard " + JSON.stringify(leaderboard));
 			}
+			ws.send("levelpath " + (current_level - 1) + " " + (tasks.length - 1 - current_level));
 		} else if(command[0] == "task") {
 			if(!isRunning) {
 				ws.send("notrunning");
 				return;
 			}
-			if(!tasks[current_level]) {
+			if(!(command[1] <= current_level)) return;
+			if(!tasks[command[1]]) {
 				if(!leaderboardpushers.includes(ws)) {
 					ws.send("update " + JSON.stringify(readLeaderboard()));
 					leaderboardpushers.push(ws);
@@ -133,20 +137,22 @@ wss.on("connection", (ws) => {
 				ws.send("finished");
 				return;
 			}
-			ws.send("task " + JSON.stringify(tasks[current_level]));
+			ws.send("task " + JSON.stringify(tasks[command[1]]));
 		} else if(command[0] == "done") {
 			if(!isRunning) {
 				ws.send("notrunning");
 				return;
 			}
+			const level = parseInt(command[1]);
+			if(level != current_level) return;
 			current_level++;
 			let leaderboard = readLeaderboard();
 			leaderboard.find(u => u.name == name).level = current_level;
-			if(command[1]) {
-				leaderboard.find(u => u.name == name).answeredqs = leaderboard.find(u => u.name == name).answeredqs + parseInt(command[1]);
-			}
 			if(command[2]) {
-				leaderboard.find(u => u.name == name).correctqs = leaderboard.find(u => u.name == name).correctqs + parseInt(command[2]);
+				leaderboard.find(u => u.name == name).answeredqs = leaderboard.find(u => u.name == name).answeredqs + parseInt(command[2]);
+			}
+			if(command[3]) {
+				leaderboard.find(u => u.name == name).correctqs = leaderboard.find(u => u.name == name).correctqs + parseInt(command[3]);
 			}
 			leaderboard = leaderboard.sort((a, b) => b.level - a.level);
 			leaderboard = calculatePercentages(leaderboard);
@@ -161,9 +167,10 @@ wss.on("connection", (ws) => {
 			for(const admin of admins) {
 				admin.send("update " + JSON.stringify(leaderboard));
 			}
-			for(const pusher of leaderboardpushers) {
-				pusher.send("update " + JSON.stringify(leaderboard));
+			for(const player of players) {
+				player.send("leaderboard " + JSON.stringify(leaderboard));
 			}
+			ws.send("levelpath " + (current_level - 1) + " " + (tasks.length - 1 - current_level));
 		} else if(command[0] == "leaderboard") {
 			ws.send("leaderboard " + JSON.stringify(readLeaderboard()));
 		} else if(command[0] == "start") {
@@ -202,10 +209,15 @@ wss.on("connection", (ws) => {
 				for(const admin of admins) {
 					admin.send("update " + JSON.stringify(leaderboard));
 				}
-				for(const pusher of leaderboardpushers) {
-					pusher.send("update " + JSON.stringify(leaderboard));
+				for(const player of players) {
+					player.send("leaderboard " + JSON.stringify(leaderboard));
 				}
 			}
+		} else if(command[0] == "info") {
+			ws.send("info " + JSON.stringify({
+				name: tasks[command[1]].name,
+				desc: tasks[command[1]].desc
+			}))
 		}
 	})
 	ws.on("close", () => {

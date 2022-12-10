@@ -2,6 +2,7 @@
 	{},
 	{
 		"name": "Hallo Welt",
+		"desc": "Der Anfang",
 		"instructions": [
 			{
 				"text": "Nehme unter der Kategorie \"Debug\" den Block \"Gebe ... in der Konsole aus\"",
@@ -20,6 +21,7 @@
 	},
 	{
 		"name": "LED zum blinken bringen",
+		"desc": "Blink, blink!",
 		"instructions": [
 			{
 				"text": "Nehme ein \"Wiederhole fortlaufend\" block und ziehe ihn unter den \"Wenn grüne Flagge geklickt\" block",
@@ -67,6 +69,7 @@
 	},
 	{
 		"name": "Externe LED zum blinken bringen",
+		"desc": "Noch mehr blink, blink!",
 		"instructions": [
 			{
 				"type": "dialog",
@@ -120,6 +123,7 @@
 	},
 	{
 		"name": "LED mit Knopf steuern",
+		"desc": "Steuere die LED selber!",
 		"instructions": [
 			{
 				"type": "dialog",
@@ -172,6 +176,7 @@
 	},
 	{
 		"name": "LED mit Poti steuern",
+		"desc": "Hell! Dunkel!",
 		"instructions": [
 			{
 				"type": "dialog",
@@ -206,6 +211,7 @@
 	},
 	{
 		"name": "Fotoresistor",
+		"desc": "Helligkeit messen",
 		"instructions": [
 			{
 				"type": "dialog",
@@ -251,6 +257,7 @@
 	},
 	{
 		"name": "RGB cycle",
+		"desc": "Discooooooooo!",
 		"instructions": [
 			{
 				"type": "dialog",
@@ -574,6 +581,7 @@
 	},
 	{
 		"name": "Eigene Blöcke",
+		"desc": "Sehr wichtig fürs Programmieren",
 		"noclear": true,
 		"startxml": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables><variable type=\"\" id=\"(}|P`33%1NOiveIj66y9\" islocal=\"false\" iscloud=\"false\">r</variable><variable type=\"\" id=\"?Ap~Lu}C)gM1`s!VT!KY\" islocal=\"false\" iscloud=\"false\">g</variable><variable type=\"\" id=\"m.)raX-J#,hCcD7(O8W(\" islocal=\"false\" iscloud=\"false\">b</variable></variables><block type=\"event_whenflagclicked\" id=\"{!5G[{H3qE2[NMQ;pK)W\" x=\"300\" y=\"400\"><next><block type=\"components_setledbrightness\" id=\"7iMZeHa%[1%8YZjL9hY[\"><comment id=\"~y0sGnp+$t~,PEI4XsOD\" pinned=\"true\" h=\"200\" w=\"200\" x=\"672\" y=\"460\" minimized=\"false\">Zurücksetzen der RGB LED</comment><value name=\"PIN\"><shadow type=\"math_number\" id=\"f+U5Z2LVm}!|}x#T{j^r\"><field name=\"NUM\">0</field></shadow></value><value name=\"BRIGHTNESS\"><shadow type=\"math_number\" id=\"Q/TV4-C6qRh#xeIP;8*k\"><field name=\"NUM\">0</field></shadow></value><next><block type=\"components_setledbrightness\" id=\"0Ca1s%^+$S5gL+7001`V\"><value name=\"PIN\"><shadow type=\"math_number\" id=\"bwt~.%j}4~-O+t-lewu$\"><field name=\"NUM\">1</field></shadow></value><value name=\"BRIGHTNESS\"><shadow type=\"math_number\" id=\"5?NE8e*9$X{hK!RA{u_l\"><field name=\"NUM\">0</field></shadow></value><next><block type=\"components_setledbrightness\" id=\"uNcIV%NaP}YY%uX+Xf=(\"><value name=\"PIN\"><shadow type=\"math_number\" id=\"Mzyv{)k1dVVH#uA:(J21\"><field name=\"NUM\">2</field></shadow></value><value name=\"BRIGHTNESS\"><shadow type=\"math_number\" id=\"*+1-4;:x6{IK0MQCw+]N\"><field name=\"NUM\">0</field></shadow></value><next><block type=\"data_setvariableto\" id=\"9A;/l?=b]9*L+mic**k;\"><field name=\"VARIABLE\" id=\"(}|P`33%1NOiveIj66y9\" variabletype=\"\">r</field><comment id=\"eVd$RW33]|Zz1CY{ozw3\" pinned=\"true\" h=\"200\" w=\"200\" x=\"733\" y=\"590.6666666666666\" minimized=\"false\">Setzen der Variablen</comment><value name=\"VALUE\"><shadow type=\"text\" id=\"*:F;]#IefGV`PTq;-vEa\"><field name=\"TEXT\">0</field></shadow></value><next><block type=\"data_setvariableto\" id=\"S6?Ozvy^J1s!KOJig[V:\"><field name=\"VARIABLE\" id=\"?Ap~Lu}C)gM1`s!VT!KY\" variabletype=\"\">g</field><value name=\"VALUE\"><shadow type=\"text\" id=\"._k^/u_:H,;hU~i$RD?W\"><field name=\"TEXT\">0</field></shadow></value><next><block type=\"data_setvariableto\" id=\"~?eK.,w-Cu|?8fm,cbpQ\"><field name=\"VARIABLE\" id=\"m.)raX-J#,hCcD7(O8W(\" variabletype=\"\">b</field><value name=\"VALUE\"><shadow type=\"text\" id=\"6WYvkt@ZF~xf{NE?@#^S\"><field name=\"TEXT\">0</field></shadow></value><next><block type=\"control_repeat\" id=\"MQjJS[oMVNXDKgiWDNb{\"><comment id=\"2fcs@YMr%NwiR%be`hs8\" pinned=\"true\" h=\"200\" w=\"200\" x=\"753\" y=\"790.6666666666667\" minimized=\"false\">Rot-Schleife</comment><value name=\"TIMES\"><shadow type=\"math_whole_number\" id=\".lWq{$y({/MSZlwg@RfV\"><field name=\"NUM\">255</field></shadow></value><statement name=\"SUBSTACK\"><block type=\"components_setledbrightness\" id=\"GHQh:QtQpaUnrkubKoP)\"><value name=\"PIN\"><shadow type=\"math_number\" id=\"v(v.9:8#+`q#,4*EZ!{B\"><field name=\"NUM\">0</field></shadow></value><value name=\"BRIGHTNESS\"><shadow type=\"math_number\" id=\"O[.r`4-~=#!e{bI~*U[=\"><field name=\"NUM\">255</field></shadow><block type=\"data_variable\" id=\"l#snZo$q/oS*UZv.X#mR\"><field name=\"VARIABLE\" id=\"(}|P`33%1NOiveIj66y9\" variabletype=\"\">r</field></block></value><next><block type=\"data_changevariableby\" id=\"xpuL+JZ;_!Js0ld^zU|w\"><field name=\"VARIABLE\" id=\"(}|P`33%1NOiveIj66y9\" variabletype=\"\">r</field><value name=\"VALUE\"><shadow type=\"math_number\" id=\"ceRvr8aHVcF91FO:(({p\"><field name=\"NUM\">1</field></shadow></value><next><block type=\"control_wait\" id=\"|snO1rxN%Am/LCaLM(8b\"><value name=\"DURATION\"><shadow type=\"math_positive_number\" id=\"LMAv]v3@x~NXJl}apkYm\"><field name=\"NUM\">0.01</field></shadow></value></block></next></block></next></block></statement><next><block type=\"control_repeat\" id=\"{cj,aX*d.eZ~9mscQwvD\"><comment id=\"1wur6y=l/k8-|6SrBFX7\" pinned=\"true\" h=\"200\" w=\"200\" x=\"780\" y=\"949.3333333333333\" minimized=\"false\">Grün-Schleife</comment><value name=\"TIMES\"><shadow type=\"math_whole_number\" id=\"#$)1}GAodm}ttR?8`W4Y\"><field name=\"NUM\">255</field></shadow></value><statement name=\"SUBSTACK\"><block type=\"components_setledbrightness\" id=\"5d7$eBwA!r$F,=}Wph/*\"><value name=\"PIN\"><shadow type=\"math_number\" id=\"yTx^(]=$N.O=Lxlobate\"><field name=\"NUM\">1</field></shadow></value><value name=\"BRIGHTNESS\"><shadow type=\"math_number\" id=\"THJO.2;6[smdeV@7=TUG\"><field name=\"NUM\">255</field></shadow><block type=\"data_variable\" id=\"u|/*VSJmTAN_7PbW.pk~\"><field name=\"VARIABLE\" id=\"?Ap~Lu}C)gM1`s!VT!KY\" variabletype=\"\">g</field></block></value><next><block type=\"data_changevariableby\" id=\"-.}{J}aqH2iaNWZPHwe=\"><field name=\"VARIABLE\" id=\"?Ap~Lu}C)gM1`s!VT!KY\" variabletype=\"\">g</field><value name=\"VALUE\"><shadow type=\"math_number\" id=\"BuVVq}KT%*MM+wqc+t#D\"><field name=\"NUM\">1</field></shadow></value><next><block type=\"control_wait\" id=\"|,:uI}+DKk%(H(Y/9ywc\"><value name=\"DURATION\"><shadow type=\"math_positive_number\" id=\"7Cf8%v7[K4wX8m-Cc%U)\"><field name=\"NUM\">0.01</field></shadow></value></block></next></block></next></block></statement><next><block type=\"control_repeat\" id=\"@*YAH@0-%8Rasab8bB^g\"><comment id=\"kNik_Va!,pZuBHvLKXKp\" pinned=\"true\" h=\"200\" w=\"200\" x=\"767\" y=\"1173.3333333333333\" minimized=\"false\">Blau-Schleife</comment><value name=\"TIMES\"><shadow type=\"math_whole_number\" id=\"Q@i@}1TEXz`~A9NHtB!z\"><field name=\"NUM\">255</field></shadow></value><statement name=\"SUBSTACK\"><block type=\"components_setledbrightness\" id=\"Oi)Kj62Mz)Cd23sHwR*D\"><value name=\"PIN\"><shadow type=\"math_number\" id=\"uz;wT:hIIkp!{T^a@:sY\"><field name=\"NUM\">2</field></shadow></value><value name=\"BRIGHTNESS\"><shadow type=\"math_number\" id=\"Ba?038mH@`Wh2-}?sMsU\"><field name=\"NUM\">255</field></shadow><block type=\"data_variable\" id=\"*ol#Vs;$5;PgTB3|%V@a\"><field name=\"VARIABLE\" id=\"m.)raX-J#,hCcD7(O8W(\" variabletype=\"\">b</field></block></value><next><block type=\"data_changevariableby\" id=\"9zAN(=gY!DO[Ap8VCm90\"><field name=\"VARIABLE\" id=\"m.)raX-J#,hCcD7(O8W(\" variabletype=\"\">b</field><value name=\"VALUE\"><shadow type=\"math_number\" id=\"A_V:hc~.%5Rm+{_QnXI^\"><field name=\"NUM\">1</field></shadow></value><next><block type=\"control_wait\" id=\"mkjILpIL{Dq#atg@T`.P\"><value name=\"DURATION\"><shadow type=\"math_positive_number\" id=\"P~BBP;n-w3w2O:)I8H`=\"><field name=\"NUM\">0.01</field></shadow></value></block></next></block></next></block></statement></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></xml>",
 		"varTags": {
@@ -730,6 +738,7 @@
 	},
 	{
 		"name": "Ultraschall Sensor",
+		"desc": "Beep! Boop! 36cm Abstand!",
 		"instructions": [
 			{
 				"type": "dialog",
