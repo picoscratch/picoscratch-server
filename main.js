@@ -108,6 +108,10 @@ function upgradeLeaderboard() {
 			p.achievementdata = {lastday: new Date(0).getTime(), completedLevels: 0};
 			upgraded = true;
 		}
+		if(p.level > tasks.length) {
+			p.level = tasks.length;
+			upgraded = true;
+		}
 	}
 
 	if(upgraded) {
