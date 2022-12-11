@@ -224,7 +224,7 @@ wss.on("connection", (ws) => {
 			for(const player of players) {
 				player.send("leaderboard " + JSON.stringify(leaderboard));
 			}
-			ws.send("levelpath " + (current_level - 1) + " " + (tasks.length - 1 - current_level));
+			ws.send("levelpath " + (current_level - 1) + " " + (tasks.length - 1 - current_level) + " " + (current_level == tasks.length ? "1" : "0"));
 		} else if(command[0] == "leaderboard") {
 			ws.send("leaderboard " + JSON.stringify(readLeaderboard()));
 		} else if(command[0] == "start") {
