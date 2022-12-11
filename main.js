@@ -68,10 +68,12 @@ function calculatePercentages(leaderboard) {
 
 /*
 {
-	name: "Jannik",
+	name: "Cfp",
 	level: 1,
 	answeredqs: 2,
-	correctqs: 1
+	correctqs: 1,
+	achievements: ["fast"],
+	achievementdata: {lastday: *Date*, completedLevels: 0}
 }
 use answeredqs and correctqs to calculate percentage
 */
@@ -86,6 +88,34 @@ function capitalizeWords(arr) {
     return element.charAt(0).toUpperCase() + element.slice(1).toLowerCase();
   });
 }
+
+function upgradeLeaderboard() {
+	console.log("Upgrading leaderboard...");
+	const board = readLeaderboard();
+	let upgraded = false;
+
+	for(const p of board) {
+		if(!p.hasOwnProperty("xp")) {
+			board = calculatePercentages(board);
+			upgraded = true;
+		}
+		if(!p.hasOwnProperty("achievements")) {
+			p.achievements = [];
+			upgraded = true;
+		}
+		if(!p.hasOwnProperty("achievementdata")) {
+			p.achievementdata = {lastday: new Date(0).getTime(), completedLevels: 0};
+			upgraded = true;
+		}
+	}
+
+	if(upgraded) {
+		writeFileSync("leaderboard.json", JSON.stringify(board), { encoding: "utf-8" })
+	}
+	console.log(upgraded ? "Upgraded leaderboard!" : "Nothing to upgrade!");
+}
+
+upgradeLeaderboard();
 
 wss.on("connection", (ws) => {
 	let name = "UNKNOWN NAME";
@@ -109,9 +139,14 @@ wss.on("connection", (ws) => {
 			name = capitalizeWords(name.split(" ")).join(" ");
 			let leaderboard = readLeaderboard();
 			if(leaderboard.find(u => u.name == name)) {
-				current_level = leaderboard.find(u => u.name == name).level;
+				const p = leaderboard.find(u => u.name == name);
+				current_level = p.level;
+				if(new Date(p.achievementdata.lastday).toDateString() != new Date().toDateString()) {
+					p.achievementdata.lastday = new Date().getTime();
+					p.achievementdata.completedLevels = 0;
+				}
 			} else {
-				leaderboard.push({name, level: 1, answeredqs: 0, correctqs: 0, percentage: 100, xp: 0});
+				leaderboard.push({name, level: 1, answeredqs: 0, correctqs: 0, percentage: 100, xp: 0, achievements: [], achievementdata: {lastday: Date.now(), completedLevels: 0}});
 			}
 			leaderboard = leaderboard.sort((a, b) => b.level - a.level);
 			writeFileSync("leaderboard.json", JSON.stringify(leaderboard), { encoding: "utf-8" })
@@ -122,7 +157,7 @@ wss.on("connection", (ws) => {
 			for(const player of players) {
 				player.send("leaderboard " + JSON.stringify(leaderboard));
 			}
-			ws.send("levelpath " + (current_level - 1) + " " + (tasks.length - 1 - current_level));
+			ws.send("levelpath " + (current_level - 1) + " " + (tasks.length - 1 - current_level) + " " + (current_level == tasks.length ? "1" : "0"));
 		} else if(command[0] == "task") {
 			if(!isRunning) {
 				ws.send("notrunning");
@@ -130,11 +165,11 @@ wss.on("connection", (ws) => {
 			}
 			if(!(command[1] <= current_level)) return;
 			if(!tasks[command[1]]) {
-				if(!leaderboardpushers.includes(ws)) {
-					ws.send("update " + JSON.stringify(readLeaderboard()));
-					leaderboardpushers.push(ws);
-				}
-				ws.send("finished");
+				// if(!leaderboardpushers.includes(ws)) {
+				// 	ws.send("update " + JSON.stringify(readLeaderboard()));
+				// 	leaderboardpushers.push(ws);
+				// }
+				// ws.send("finished");
 				return;
 			}
 			ws.send("task " + JSON.stringify(tasks[command[1]]));
@@ -154,15 +189,26 @@ wss.on("connection", (ws) => {
 			if(command[3]) {
 				leaderboard.find(u => u.name == name).correctqs = leaderboard.find(u => u.name == name).correctqs + parseInt(command[3]);
 			}
+			leaderboard.find(u => u.name == name).achievementdata.completedLevels++;
+			if(leaderboard.find(u => u.name == name).achievementdata.completedLevels == 5) {
+				if(!leaderboard.find(u => u.name == name).achievements.includes("fast")) {
+					leaderboard.find(u => u.name == name).achievements.push("fast");
+				}
+			}
 			leaderboard = leaderboard.sort((a, b) => b.level - a.level);
+			if(leaderboard[0] == leaderboard.find(u => u.name == name)) {
+				if(!leaderboard.find(u => u.name == name).achievements.includes("first")) {
+					leaderboard.find(u => u.name == name).achievements.push("first");
+				}
+			}
 			leaderboard = calculatePercentages(leaderboard);
 			writeFileSync("leaderboard.json", JSON.stringify(leaderboard), { encoding: "utf-8" })
 			if(!tasks[current_level]) {
-				if(!leaderboardpushers.includes(ws)) {
-					ws.send("update " + JSON.stringify(readLeaderboard()));
-					leaderboardpushers.push(ws);
-				}
-				ws.send("finished");
+				// if(!leaderboardpushers.includes(ws)) {
+				// 	ws.send("update " + JSON.stringify(readLeaderboard()));
+				// 	leaderboardpushers.push(ws);
+				// }
+				// ws.send("finished");
 			}
 			for(const admin of admins) {
 				admin.send("update " + JSON.stringify(leaderboard));
@@ -175,6 +221,7 @@ wss.on("connection", (ws) => {
 			ws.send("leaderboard " + JSON.stringify(readLeaderboard()));
 		} else if(command[0] == "start") {
 			if(admins.includes(ws)) {
+				if(isRunning) return;
 				isRunning = true;
 				for(const player of players) {
 					player.send("start");
@@ -182,6 +229,7 @@ wss.on("connection", (ws) => {
 			}
 		} else if(command[0] == "end") {
 			if(admins.includes(ws)) {
+				if(!isRunning) return;
 				isRunning = false;
 				for(const player of players) {
 					player.send("end");
