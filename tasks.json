@@ -816,5 +816,58 @@
 				"correct": 2
 			}
 		]
+	},
+	{
+		"name": "PIR Sensor",
+		"desc": "Bewegung erkannt!",
+		"instructions": [
+			{
+				"type": "dialog",
+				"title": "Wiring",
+				"text": "Stecke auf dem Steckbrett:<br><img src=\"PICOSCRATCHSERVER/img/pir-wiring.png\">",
+				"closeButton": "Fertig"
+			},
+			{
+				"type": "dialog",
+				"title": "PIR Sensor",
+				"text": "Ein PIR Sensor kann Bewegungen erkennen. Die Pins auf dem PIR Sensor sind so belegt: GND, Data, 3.3V. 3.3V wird mit Strom verbunden (3.3 Volt vom Pico).<br>Der PIR Sensor sendet ein Stromsignal bei Data, wenn er bewegung erkennt. GND ist Ground.",
+				"closeButton": "Ok"
+			},
+			{
+				"text": "Nehme eine unendliche Schleife",
+				"block": "control_forever",
+				"previousBlock": "event_whenflagclicked"
+			},
+			{
+				"text": "Nehme einen \"falls ... sonst\" block",
+				"block": "control_if_else",
+				"parentBlock": "control_forever"
+			},
+			{
+				"text": "Ziehe einen \"PIR Sensor Erkennung\" block in den \"falls ... sonst\" block",
+				"block": "components_pir",
+				"parentBlock": "control_if_else",
+				"blockTag": "pir"
+			},
+			{
+				"type": "changeblock",
+				"text": "Ändere die PIN Nummer zu 26",
+				"targetBlockTag": "pir",
+				"name": "NUM",
+				"to": "26"
+			},
+			{
+				"text": "Schalte die LED ein, wenn ja",
+				"block": "components_ledon",
+				"parentBlock": "control_if_else",
+				"parentStack": "SUBSTACK"
+			},
+			{
+				"text": "Schalte die LED aus, wenn nicht",
+				"block": "components_ledoff",
+				"parentBlock": "control_if_else",
+				"parentStack": "SUBSTACK2"
+			}
+		]
 	}
 ]
