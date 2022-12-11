@@ -33,14 +33,19 @@
 		<input type="password" placeholder="Password" id="pw" disabled>
 	</div>
 	<div style="display: flex; margin: 10px; gap: 15px; flex-direction: column; display: none; transform: scale(0) skew(90deg); opacity: 0; transition: transform 500ms, opacity 1s;" id="main">
-		<div style="padding: 5px; background-color: #1d1d1d; border-color: #2e2e2e; border-width: 2px; border-style: solid; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-direction: column;">
-			<h1 style="margin: 0;">Leaderboard</h1>
-			<table id="leaderboard" style="font-size: 1.5rem;"></table>
-		</div>
 		<div style="padding: 5px; background-color: #1d1d1d; border-color: #2e2e2e; border-width: 2px; border-style: solid; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px;">
 			<h1 style="margin: 0;">Control</h1>
 			<button id="start">Start Game</button>
 			<button id="end">End Game</button>
+			<div style="display: flex; gap: 10px; align-items: center;">
+				<p style="font-size: 1.4rem; margin: 0;">Start level: </p>
+				<input id="startlevel" type="number" style="width: 3ch;" value="1">
+				<button id="set">Set</button>
+			</div>
+		</div>
+		<div style="padding: 5px; background-color: #1d1d1d; border-color: #2e2e2e; border-width: 2px; border-style: solid; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+			<h1 style="margin: 0;">Leaderboard</h1>
+			<table id="leaderboard" style="font-size: 1.5rem;"></table>
 		</div>
 	</div>
 	<script>
@@ -51,14 +56,13 @@
 				document.getElementById("leaderboard").removeChild(document.getElementById("leaderboard").lastChild);
 			}
 			const tr = document.createElement("tr");
-			["Platz", "Name", "Level", "Quiz %", "Actions"].forEach(s => {
+			["Platz", "Name", "Level", "Quiz %", "XP", "Actions"].forEach(s => {
 				const td = document.createElement("th");
 				td.innerText = s;
 				tr.appendChild(td);
 			})
 			document.getElementById("leaderboard").appendChild(tr);
-			for(let i = 0; i < 10; i++) {
-				if(!leaderboard[i]) break;
+			for(let i = 0; i < leaderboard.length; i++) {
 				const player = leaderboard[i];
 				const tr = document.createElement("tr");
 				const place = document.createElement("td");
@@ -73,7 +77,12 @@
 				const percentage = document.createElement("td");
 				percentage.innerText = player.percentage;
 				tr.appendChild(percentage);
+				const xp = document.createElement("td");
+				xp.innerText = player.xp;
+				tr.appendChild(xp);
 				const actions = document.createElement("td");
+				actions.style.display = "flex";
+				actions.style.gap = "10px";
 				const kickAction = document.createElement("button");
 				kickAction.innerHTML = "K";
 				kickAction.addEventListener("click", () => {
@@ -83,7 +92,7 @@
 				actions.appendChild(kickAction);
 				const deleteAction = document.createElement("button");
 				deleteAction.innerHTML = "D";
-				deleteAction.addEventListener("click", () => {
+				deleteAction.addEventListener("dblclick", () => {
 					ws.send("delete " + player.name);
 				})
 				deleteAction.title = "Delete " + player.name;
@@ -116,9 +125,12 @@
 				}, 100);
 				leaderboard = JSON.parse(msg.split("approved ", 2)[1]);
 				renderLeaderboard();
+				ws.send("startlevel");
 			} else if(msg.startsWith("update")) {
 				leaderboard = JSON.parse(msg.split("update ", 2)[1]);
 				renderLeaderboard();
+			} else if(msg.startsWith("startlevel")) {
+				document.querySelector("#startlevel").value = parseInt(msg.split("startlevel ", 2)[1]);
 			}
 		})
 		document.querySelector("#start").addEventListener("click", () => {
@@ -126,6 +138,9 @@
 		})
 		document.querySelector("#end").addEventListener("click", () => {
 			ws.send("end");
+		})
+		document.querySelector("#set").addEventListener("click", () => {
+			ws.send("startlevel " + document.querySelector("#startlevel").value);
 		})
 	</script>
 </body>

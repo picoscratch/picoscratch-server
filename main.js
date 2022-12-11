@@ -82,6 +82,7 @@ let admins = [];
 let players = [];
 let people = {};
 let isRunning = false;
+let startLevel = 1;
 
 function capitalizeWords(arr) {
   return arr.map(element => {
@@ -141,13 +142,16 @@ wss.on("connection", (ws) => {
 			if(leaderboard.find(u => u.name == name)) {
 				const p = leaderboard.find(u => u.name == name);
 				current_level = p.level;
+				if(current_level < startLevel) current_level = startLevel;
 				if(new Date(p.achievementdata.lastday).toDateString() != new Date().toDateString()) {
 					p.achievementdata.lastday = new Date().getTime();
 					p.achievementdata.completedLevels = 0;
 				}
 			} else {
-				leaderboard.push({name, level: 1, answeredqs: 0, correctqs: 0, percentage: 100, xp: 0, achievements: [], achievementdata: {lastday: Date.now(), completedLevels: 0}});
+				leaderboard.push({name, level: startLevel, answeredqs: 0, correctqs: 0, percentage: 100, xp: 0, achievements: [], achievementdata: {lastday: Date.now(), completedLevels: 0}});
+				current_level = startLevel;
 			}
+			leaderboard = calculatePercentages(leaderboard);
 			leaderboard = leaderboard.sort((a, b) => b.level - a.level);
 			writeFileSync("leaderboard.json", JSON.stringify(leaderboard), { encoding: "utf-8" })
 			people[name] = ws;
@@ -251,7 +255,7 @@ wss.on("connection", (ws) => {
 					people[command.join(" ")].close();
 				}
 				let leaderboard = readLeaderboard();
-				leaderboard.splice(leaderboard.findIndex(u => u.name == name), 1);
+				leaderboard.splice(leaderboard.findIndex(u => u.name == command.join(" ")), 1);
 				leaderboard = leaderboard.sort((a, b) => b.level - a.level);
 				writeFileSync("leaderboard.json", JSON.stringify(leaderboard), { encoding: "utf-8" })
 				for(const admin of admins) {
@@ -266,6 +270,16 @@ wss.on("connection", (ws) => {
 				name: tasks[command[1]].name,
 				desc: tasks[command[1]].desc
 			}))
+		} else if(command[0] == "startlevel") {
+			if(command[1]) {
+				startLevel = parseInt(command[1]);
+				for(const admin of admins) {
+					if(admin == ws) continue;
+					admin.send("startlevel " + startLevel);
+				}
+			} else {
+				ws.send("startlevel " + startLevel);
+			}
 		}
 	})
 	ws.on("close", () => {
