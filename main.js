@@ -270,6 +270,7 @@ wss.on("connection", (ws) => {
 				}
 			}
 		} else if(command[0] == "info") {
+			if(!tasks[command[1]]) return;
 			ws.send("info " + JSON.stringify({
 				name: tasks[command[1]].name,
 				desc: tasks[command[1]].desc
