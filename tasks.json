@@ -611,6 +611,12 @@
 		},
 		"instructions": [
 			{
+				"type": "dialog",
+				"title": "WIP",
+				"text": "Diese Aufgabe enthält Schritte, welche noch besser durchgetestet werden müssen. Es kann sein das die Aufgabe rot wird, aber nix passiert, es kann sein das Sachen noch nicht richtig funktionieren.<br>Bei dieser Aufgabe sind bereits Blöcke vorhanden. Das ist richtig so.",
+				"closeButton": "Ok"
+			},
+			{
 				"type": "customblock",
 				"text": "Erstelle einen neuen Block für \"LED cycle\", mit einem argument \"pin\"",
 				"args": 1,
@@ -661,21 +667,6 @@
 				"targetBlockTag": "setGvar"
 			},
 			{
-				"type": "vardelete",
-				"text": "Lösche die Variable \"r\"",
-				"targetVarTag": "r"
-			},
-			{
-				"type": "vardelete",
-				"text": "Lösche die Variable \"g\"",
-				"targetVarTag": "g"
-			},
-			{
-				"type": "vardelete",
-				"text": "Lösche die Variable \"b\"",
-				"targetVarTag": "b"
-			},
-			{
 				"type": "move",
 				"text": "Bewege den Setze Variable Block zum \"LED cycle\" Block",
 				"fromBlockTag": "setRvar",
@@ -721,7 +712,7 @@
 			},
 			{
 				"type": "customblockcall",
-				"text": "Nehme deinen Block und ziehe ihn unter den \"Setze (c) auf (0)\" Block",
+				"text": "Nehme deinen Block noch einmal",
 				"previousTag": "secondcall",
 				"targetBlockTag": "rgbcycle",
 				"blockTag": "thirdcall"
