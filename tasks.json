@@ -74,7 +74,7 @@
 			{
 				"type": "dialog",
 				"title": "Wiring",
-				"text": "Stecke auf dem Steckbrett:<br><img src=\"PICOSCRATCHSERVER/img/led-wiring.png\">",
+				"text": "Stecke auf dem Steckbrett:<br><img width=\"80%\" src=\"PICOSCRATCHSERVER/img/led-wiring.png\">",
 				"closeButton": "Fertig"
 			},
 			{
@@ -134,7 +134,7 @@
 			{
 				"type": "dialog",
 				"title": "Wiring",
-				"text": "Stecke auf dem Steckbrett:<br><img src=\"PICOSCRATCHSERVER/img/button-wiring.png\">",
+				"text": "Stecke auf dem Steckbrett:<br><img width=\"80%\" src=\"PICOSCRATCHSERVER/img/button-wiring.png\">",
 				"closeButton": "Fertig"
 			},
 			{
@@ -181,7 +181,7 @@
 			{
 				"type": "dialog",
 				"title": "Wiring",
-				"text": "Stecke auf dem Steckbrett:<br><img src=\"PICOSCRATCHSERVER/img/poti-wiring.png\">",
+				"text": "Stecke auf dem Steckbrett:<br><img width=\"80%\" src=\"PICOSCRATCHSERVER/img/poti-wiring.png\">",
 				"closeButton": "Fertig"
 			},
 			{
@@ -216,7 +216,7 @@
 			{
 				"type": "dialog",
 				"title": "Wiring",
-				"text": "Stecke auf dem Steckbrett:<br><img src=\"PICOSCRATCHSERVER/img/photo-wiring.png\">",
+				"text": "Stecke auf dem Steckbrett:<br><img width=\"80%\" src=\"PICOSCRATCHSERVER/img/photo-wiring.png\">",
 				"closeButton": "Fertig"
 			},
 			{
@@ -262,7 +262,7 @@
 			{
 				"type": "dialog",
 				"title": "Wiring",
-				"text": "Stecke auf dem Steckbrett:<br><img src=\"PICOSCRATCHSERVER/img/rgb-wiring.png\">",
+				"text": "Stecke auf dem Steckbrett:<br><img width=\"80%\" src=\"PICOSCRATCHSERVER/img/rgb-wiring.png\">",
 				"closeButton": "Fertig"
 			},
 			{
@@ -734,7 +734,7 @@
 			{
 				"type": "dialog",
 				"title": "Wiring",
-				"text": "Stecke auf dem Steckbrett:<br><img src=\"PICOSCRATCHSERVER/img/ultrasonic-wiring.png\">",
+				"text": "Stecke auf dem Steckbrett:<br><img width=\"80%\" src=\"PICOSCRATCHSERVER/img/ultrasonic-wiring.png\">",
 				"closeButton": "Fertig"
 			},
 			{
@@ -815,7 +815,7 @@
 			{
 				"type": "dialog",
 				"title": "Wiring",
-				"text": "Stecke auf dem Steckbrett:<br><img src=\"PICOSCRATCHSERVER/img/pir-wiring.png\">",
+				"text": "Stecke auf dem Steckbrett:<br><img width=\"80%\" src=\"PICOSCRATCHSERVER/img/pir-wiring.png\">",
 				"closeButton": "Fertig"
 			},
 			{
