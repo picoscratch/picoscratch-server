@@ -99,6 +99,16 @@
 				})
 				deleteAction.title = "Delete " + player.name;
 				actions.appendChild(deleteAction);
+				const setLevelAction = document.createElement("button");
+				setLevelAction.style.padding = "5px";
+				setLevelAction.innerHTML = `<svg width="40px" height="40px" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7.975 9.689a1 1 0 1 1-1.45-1.378l4.75-5a1 1 0 0 1 1.45 0l4.75 5a1 1 0 1 1-1.45 1.378L13 6.505v10.99l3.025-3.184a1 1 0 1 1 1.45 1.378l-4.75 5a1 1 0 0 1-1.45 0l-4.75-5a1 1 0 1 1 1.45-1.378L11 17.495V6.505L7.975 9.689Z" fill="#ffffff"/></svg>`;
+				setLevelAction.addEventListener("click", () => {
+					const level = prompt("Set level for " + player.name, player.level);
+					if(level == null) return;
+					ws.send("setlevel " + level + " " + player.name);
+				})
+				setLevelAction.title = "Set level for " + player.name;
+				actions.appendChild(setLevelAction);
 				tr.appendChild(actions);
 				document.getElementById("leaderboard").appendChild(tr);
 			}

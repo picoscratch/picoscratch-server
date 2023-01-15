@@ -285,6 +285,28 @@ wss.on("connection", (ws) => {
 			} else {
 				ws.send("startlevel " + startLevel);
 			}
+		} else if(command[0] == "setlevel") {
+			// setlevel <level> <playername>
+			// playername might include spaces
+			if(admins.includes(ws)) {
+				command.shift();
+				let level = parseInt(command.shift());
+				// set their level on the leaderboard
+				let leaderboard = readLeaderboard();
+				leaderboard[leaderboard.findIndex(u => u.name == command.join(" "))].level = level;
+				leaderboard = leaderboard.sort((a, b) => b.level - a.level);
+				writeFileSync("leaderboard.json", JSON.stringify(leaderboard), { encoding: "utf-8" })
+				for(const admin of admins) {
+					admin.send("update " + JSON.stringify(leaderboard));
+				}
+				for(const player of players) {
+					player.send("leaderboard " + JSON.stringify(leaderboard));
+				}
+				if(people[command.join(" ")]) {
+					const current_level = leaderboard[leaderboard.findIndex(u => u.name == command.join(" "))].level;
+					people[command.join(" ")].send("levelpath " + (current_level - 1) + " " + (tasks.length - 1 - current_level) + " " + (current_level == tasks.length ? "1" : "0"));
+				}
+			}
 		}
 	})
 	ws.on("close", () => {
