@@ -612,6 +612,12 @@
 		"instructions": [
 			{
 				"type": "dialog",
+				"title": "Wiring",
+				"text": "Stecke auf dem Steckbrett:<br><img width=\"80%\" src=\"PICOSCRATCHSERVER/img/rgb-wiring.png\">",
+				"closeButton": "Fertig"
+			},
+			{
+				"type": "dialog",
 				"title": "WIP",
 				"text": "Diese Aufgabe enthält Schritte, welche noch besser durchgetestet werden müssen. Es kann sein das die Aufgabe rot wird, aber nix passiert, es kann sein das Sachen noch nicht richtig funktionieren.<br>Bei dieser Aufgabe sind bereits Blöcke vorhanden. Das ist richtig so.",
 				"closeButton": "Ok"
