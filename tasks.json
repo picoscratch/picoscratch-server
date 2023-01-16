@@ -774,10 +774,10 @@
 			},
 			{
 				"type": "changeblock",
-				"text": "Setze den zweiten Wert zu \" cm\"",
+				"text": "Setze den zweiten Wert zu \"cm\"",
 				"targetBlockTag": "join",
 				"name": "TEXT",
-				"to": " cm"
+				"to": "cm"
 			},
 			{
 				"text": "Baue eine pause ein",
